@@ -28,10 +28,10 @@ const Footer = () => {
     return (
         <Stack gap={2} padding={3}>
             {helpContent.map((help) => (
-                <>
-                    <Heading>{help.title}</Heading>
+                <Stack key={help.title}>
+                    <Heading >{help.title}</Heading>
                     <Text>{help.text}</Text>
-                </>
+                </Stack>
             ))}
         </Stack>
     );
