@@ -13,6 +13,7 @@ export interface Ship {
     lifePoints: number;
     baseRewardFamePoints: number;
     bounties: number;
+    credits: number;
     rewardNote: string;
     targetPath: string;
     targetPreference: string;

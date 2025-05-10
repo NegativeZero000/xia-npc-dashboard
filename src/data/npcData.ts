@@ -13,6 +13,7 @@ export default {
     "lifePoints": 12,
     "baseRewardFamePoints": 2,
     "bounties": 2,
+    "credits": 0,
     "rewardNote": "",
     "targetPath": "Draw a planet chip. Goes to any spot on that tile.",
     "targetPreference": "Nearest Outlaw Ship up to 5 tiles away or last attacker."

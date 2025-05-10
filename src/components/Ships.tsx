@@ -2,6 +2,7 @@ import { Box, Button, HStack, Stack, Text } from "@chakra-ui/react";
 import { FaMinus, FaPlus } from "react-icons/fa";
 import { useState } from "react";
 import type { Ship } from "../hooks/useShip";
+import { RiMoneyDollarBoxFill } from "react-icons/ri";
 
 interface Props {
     npc: Ship;
@@ -59,6 +60,13 @@ const Ships = ({ npc }: Props) => {
                         <FaPlus />
                     </Button>
                 </HStack>
+            </Stack>
+            <Stack textAlign="left">
+                <Text fontSize={headingSize}>Credits</Text>
+
+                <Text fontSize="large" wordWrap="normal">
+                    {ship.credits * 1000} <RiMoneyDollarBoxFill />
+                </Text>
             </Stack>
             <Stack textAlign="left">
                 <Text fontSize={headingSize}>On Kill</Text>
