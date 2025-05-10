@@ -20,6 +20,15 @@ const Ships = ({ npc }: Props) => {
         setShip({...ship, lifePoints : ship.lifePoints - 1});
     }
   };
+   const incrementCredits = () => {
+    setShip({...ship, credits : ship.credits + 1});
+  };
+
+  const decrementCredits = () => {
+    if (ship.credits > 0) {
+        setShip({...ship, credits : ship.credits - 1});
+    }
+  };
 
 
     const headingSize = "sm";
@@ -67,6 +76,14 @@ const Ships = ({ npc }: Props) => {
                 <Text fontSize="large" wordWrap="normal">
                     {ship.credits * 1000} <RiMoneyDollarBoxFill />
                 </Text>
+                <HStack>
+                    <Button colorPalette="red" variant="subtle" size="xs" onClick={decrementCredits}>
+                        <FaMinus />
+                    </Button>
+                    <Button colorPalette="green" variant="subtle" size="xs" onClick={incrementCredits}>
+                        <FaPlus />
+                    </Button>
+                </HStack>
             </Stack>
             <Stack textAlign="left">
                 <Text fontSize={headingSize}>On Kill</Text>
