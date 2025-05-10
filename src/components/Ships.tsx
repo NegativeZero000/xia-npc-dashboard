@@ -1,11 +1,26 @@
-import { Box, HStack, Stack, Text } from "@chakra-ui/react";
+import { Box, Button, HStack, Stack, Text } from "@chakra-ui/react";
+import { FaMinus, FaPlus } from "react-icons/fa";
+import { useState } from "react";
 import type { Ship } from "../hooks/useShip";
 
 interface Props {
-    ship: Ship;
+    npc: Ship;
 }
 
-const Ships = ({ ship }: Props) => {
+const Ships = ({ npc }: Props) => {
+   const [ship, setShip] = useState(npc)
+
+   const incrementLifePoints = () => {
+    setShip({...ship, lifePoints : ship.lifePoints + 1});
+  };
+
+  const decrementLifePoints = () => {
+    if (ship.lifePoints > 0) {
+        setShip({...ship, lifePoints : ship.lifePoints - 1});
+    }
+  };
+
+
     const headingSize = "sm";
     return (
         <HStack padding={3} gap={2}>
@@ -36,6 +51,14 @@ const Ships = ({ ship }: Props) => {
             <Stack textAlign="left">
                 <Text fontSize={headingSize}>Life Points</Text>
                 <Text fontSize="large"> {ship.lifePoints}</Text>
+                <HStack>
+                    <Button colorPalette="red" variant="subtle" size="xs" onClick={decrementLifePoints}>
+                        <FaMinus />
+                    </Button>
+                    <Button colorPalette="green" variant="subtle" size="xs" onClick={incrementLifePoints}>
+                        <FaPlus />
+                    </Button>
+                </HStack>
             </Stack>
             <Stack textAlign="left">
                 <Text fontSize={headingSize}>On Kill</Text>

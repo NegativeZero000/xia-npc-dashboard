@@ -22,7 +22,7 @@ function App() {
             </GridItem>
             <GridItem area="main" padding={2}>
                 <Box backgroundColor="gray.400">
-                   <Ships ship={aShip}/>
+                   <Ships npc={aShip}/>
                 </Box>
             </GridItem>
             <GridItem area="footer" padding={2}>
