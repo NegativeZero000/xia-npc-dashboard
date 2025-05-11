@@ -2,6 +2,7 @@ import { Button, Group, HStack, Stack, Text } from "@chakra-ui/react";
 import { FaMinus, FaPlus } from "react-icons/fa";
 import type { Ship } from "../hooks/useShip";
 import { RiMoneyDollarBoxFill } from "react-icons/ri";
+import DiceIcon from "./DiceIcon";
 
 interface Props {
     ship: Ship;
@@ -46,13 +47,13 @@ const ShipDashboard = ({ ship, setShip }: Props) => {
             <Stack textAlign="left">
                 <Text fontSize={headingSize}>Attack</Text>
                 <Text fontSize="large">
-                    {ship.numberOfAttackDice}D{ship.attackDie} {ship.attackType}
+                    {ship.numberOfAttackDice}<DiceIcon dieIndex={ship.attackDie} color="red.200"/> {ship.attackType}
                 </Text>
             </Stack>
             <Stack textAlign="left">
                 <Text fontSize={headingSize}>Defence</Text>
                 <Text fontSize="large">
-                    {ship.numberOfDefenceDice}D{ship.defenceDie} {ship.defenceType}
+                    {ship.numberOfDefenceDice}<DiceIcon dieIndex={ship.defenceDie} color="blue.600"/> {ship.defenceType}
                 </Text>
             </Stack>
             <Stack textAlign="left">
