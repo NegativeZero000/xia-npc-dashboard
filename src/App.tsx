@@ -2,7 +2,7 @@ import { Box, Grid, GridItem, Text } from "@chakra-ui/react";
 import "./App.css";
 import NavBar from "./components/NavBar";
 import Footer from "./components/Footer";
-import Ships from "./components/Ships";
+import ShipDashboard from "./components/ShipDashboard";
 import npcShip from "./data/npcData"
 import type { Ship } from "./hooks/useShip";
 import { useState } from "react";
@@ -23,7 +23,7 @@ function App() {
             </GridItem>
             <GridItem area="main" padding={2}>
                 <Box backgroundColor="gray.400">
-                   <Ships ship={enforcer} setShip={setEnforcer}/>
+                   <ShipDashboard ship={enforcer} setShip={setEnforcer}/>
                 </Box>
             </GridItem>
             <GridItem area="footer" padding={2}>

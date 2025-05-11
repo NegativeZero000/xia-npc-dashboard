@@ -1,14 +1,14 @@
-import { Button, HStack, Stack, Text } from "@chakra-ui/react";
+import { Button, Group, HStack, Stack, Text } from "@chakra-ui/react";
 import { FaMinus, FaPlus } from "react-icons/fa";
 import type { Ship } from "../hooks/useShip";
 import { RiMoneyDollarBoxFill } from "react-icons/ri";
 
 interface Props {
-    ship: Ship
+    ship: Ship;
     setShip: (ship: Ship) => void;
 }
 
-const Ships = ({ ship, setShip }: Props) => {
+const ShipDashboard = ({ ship, setShip }: Props) => {
     const incrementLifePoints = () => {
         setShip({ ...ship, lifePoints: ship.lifePoints + 1 });
     };
@@ -59,12 +59,14 @@ const Ships = ({ ship, setShip }: Props) => {
                 <Text fontSize={headingSize}>Life Points</Text>
                 <Text fontSize="large"> {ship.lifePoints}</Text>
                 <HStack>
-                    <Button colorPalette="red" variant="subtle" size="xs" onClick={decrementLifePoints}>
-                        <FaMinus />
-                    </Button>
-                    <Button colorPalette="green" variant="subtle" size="xs" onClick={incrementLifePoints}>
-                        <FaPlus />
-                    </Button>
+                    <Group attached>
+                        <Button colorPalette="red" variant="subtle" size="xs" onClick={decrementLifePoints}>
+                            <FaMinus />
+                        </Button>
+                        <Button colorPalette="green" variant="subtle" size="xs" onClick={incrementLifePoints}>
+                            <FaPlus />
+                        </Button>
+                    </Group>
                 </HStack>
             </Stack>
             <Stack textAlign="left">
@@ -74,12 +76,14 @@ const Ships = ({ ship, setShip }: Props) => {
                     {ship.credits * 1000} <RiMoneyDollarBoxFill />
                 </Text>
                 <HStack>
-                    <Button colorPalette="red" variant="subtle" size="xs" onClick={decrementCredits}>
-                        <FaMinus />
-                    </Button>
-                    <Button colorPalette="green" variant="subtle" size="xs" onClick={incrementCredits}>
-                        <FaPlus />
-                    </Button>
+                    <Group attached>
+                        <Button colorPalette="red" variant="subtle" size="xs" onClick={decrementCredits}>
+                            <FaMinus />
+                        </Button>
+                        <Button colorPalette="green" variant="subtle" size="xs" onClick={incrementCredits}>
+                            <FaPlus />
+                        </Button>
+                    </Group>
                 </HStack>
             </Stack>
             <Stack textAlign="left">
@@ -102,4 +106,4 @@ const Ships = ({ ship, setShip }: Props) => {
     );
 };
 
-export default Ships;
+export default ShipDashboard;
