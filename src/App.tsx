@@ -1,4 +1,4 @@
-import { Box, Grid, GridItem, Text } from "@chakra-ui/react";
+import { Box, Grid, GridItem } from "@chakra-ui/react";
 import "./App.css";
 import NavBar from "./components/NavBar";
 import Footer from "./components/Footer";
@@ -8,7 +8,11 @@ import type { Ship } from "./hooks/useShip";
 import { useState } from "react";
 
 function App() {
-    const [enforcer, setEnforcer] = useState(npcShip as Ship)
+    const [enforcer, setEnforcer] = useState(npcShip.find(key => key.name === "Enforcer" ) as Ship)
+    const [merchant, setMerchant] = useState(npcShip.find(key => key.name === "Merchant" ) as Ship)
+    const [scoundrel, setScoundrel] = useState(npcShip.find(key => key.name === "Scoundrel" ) as Ship)
+    const [sellsword, setSellsword] = useState(npcShip.find(key => key.name === "Sellsword" ) as Ship)
+
     return (
         <Grid
             templateAreas={{
@@ -22,8 +26,11 @@ function App() {
                 <NavBar />
             </GridItem>
             <GridItem area="main" padding={2}>
-                <Box backgroundColor="gray.400">
+                <Box>
                    <ShipDashboard ship={enforcer} setShip={setEnforcer}/>
+                   <ShipDashboard ship={merchant} setShip={setMerchant}/>
+                   <ShipDashboard ship={scoundrel} setShip={setScoundrel}/>
+                   <ShipDashboard ship={sellsword} setShip={setSellsword}/>
                 </Box>
             </GridItem>
             <GridItem area="footer" padding={2}>

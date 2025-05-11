@@ -14,7 +14,7 @@ const components = {
 
 const DiceIcon = ({ dieIndex, color }: Props) => {
     const SpecificDie = components["d" + dieIndex.toString() as keyof typeof components];
-    return <SpecificDie size="lg" color={color}/>
+    if (SpecificDie) return <SpecificDie size="lg" color={color}/>
 };
 
 export default DiceIcon;
