@@ -5,9 +5,10 @@ import Footer from "./components/Footer";
 import Ships from "./components/Ships";
 import npcShip from "./data/npcData"
 import type { Ship } from "./hooks/useShip";
+import { useState } from "react";
 
 function App() {
-    const aShip = npcShip as Ship
+    const [enforcer, setEnforcer] = useState(npcShip as Ship)
     return (
         <Grid
             templateAreas={{
@@ -22,7 +23,7 @@ function App() {
             </GridItem>
             <GridItem area="main" padding={2}>
                 <Box backgroundColor="gray.400">
-                   <Ships npc={aShip}/>
+                   <Ships ship={enforcer} setShip={setEnforcer}/>
                 </Box>
             </GridItem>
             <GridItem area="footer" padding={2}>

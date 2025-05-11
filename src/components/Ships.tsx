@@ -1,35 +1,32 @@
-import { Box, Button, HStack, Stack, Text } from "@chakra-ui/react";
+import { Button, HStack, Stack, Text } from "@chakra-ui/react";
 import { FaMinus, FaPlus } from "react-icons/fa";
-import { useState } from "react";
 import type { Ship } from "../hooks/useShip";
 import { RiMoneyDollarBoxFill } from "react-icons/ri";
 
 interface Props {
-    npc: Ship;
+    ship: Ship
+    setShip: (ship: Ship) => void;
 }
 
-const Ships = ({ npc }: Props) => {
-   const [ship, setShip] = useState(npc)
+const Ships = ({ ship, setShip }: Props) => {
+    const incrementLifePoints = () => {
+        setShip({ ...ship, lifePoints: ship.lifePoints + 1 });
+    };
 
-   const incrementLifePoints = () => {
-    setShip({...ship, lifePoints : ship.lifePoints + 1});
-  };
+    const decrementLifePoints = () => {
+        if (ship.lifePoints > 0) {
+            setShip({ ...ship, lifePoints: ship.lifePoints - 1 });
+        }
+    };
+    const incrementCredits = () => {
+        setShip({ ...ship, credits: ship.credits + 1 });
+    };
 
-  const decrementLifePoints = () => {
-    if (ship.lifePoints > 0) {
-        setShip({...ship, lifePoints : ship.lifePoints - 1});
-    }
-  };
-   const incrementCredits = () => {
-    setShip({...ship, credits : ship.credits + 1});
-  };
-
-  const decrementCredits = () => {
-    if (ship.credits > 0) {
-        setShip({...ship, credits : ship.credits - 1});
-    }
-  };
-
+    const decrementCredits = () => {
+        if (ship.credits > 0) {
+            setShip({ ...ship, credits: ship.credits - 1 });
+        }
+    };
 
     const headingSize = "sm";
     return (
