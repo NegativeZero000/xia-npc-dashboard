@@ -16,7 +16,7 @@ const UpgradeDrawer = ({ setEnforcerState }: Props) => {
         { npc: "Sellsword", dieRoll: "11 - 12" },
     ];
 
-    const levelUpActionsTable = [
+    const upgradeShipActionsTable = [
         { dieRoll: "01 - 01", effect: "Add 6 to the movement rate of the NPC." },
         { dieRoll: "02 - 03", effect: "Add 3 to the movement rate of the NPC." },
         { dieRoll: "04 - 05", effect: "Attack uses two dice instead of 1. (Reroll for merchant)." },
@@ -26,15 +26,25 @@ const UpgradeDrawer = ({ setEnforcerState }: Props) => {
         { dieRoll: "12 - 12", effect: "Add another activation chip for this NPC to the bag." },
     ];
 
-    const [selectedShipUpgradeRow, setShipUpgradeRow] = useState("");
+    const [selectedShipUpgradeRow, setSelectedShipUpgradeRow] = useState("");
+    const [selectedUpgradeRow, setSelectedUpgradeRow] = useState("");
 
     const handleShipUpgradeRowClick = (index: string) => {
-        setShipUpgradeRow(index);
+        setSelectedShipUpgradeRow(index);
+    };
+    const handleUpgradeRowClick = (index: string) => {
+        setSelectedUpgradeRow(index);
     };
 
     const handleCloseDrawer = () => {
-        setShipUpgradeRow("");
+        setSelectedShipUpgradeRow("");
+        setSelectedUpgradeRow("");
     };
+
+    const handleUpgrade = () => {
+        console.log(selectedShipUpgradeRow)
+        console.log(selectedUpgradeRow)
+    }
 
     return (
         <Drawer.Root size="md">
@@ -92,10 +102,32 @@ const UpgradeDrawer = ({ setEnforcerState }: Props) => {
                                 </Table.Body>
                             </Table.Root>
                             </Box>
+                            <Box margin={5} border="2px solid" borderRadius="md">
+                            <Table.Root>
+                                <Table.Header>
+                                    <Table.Row backgroundColor="gray.500">
+                                        <Table.ColumnHeader>Die Roll</Table.ColumnHeader>
+                                        <Table.ColumnHeader>Upgrade Effect</Table.ColumnHeader>
+                                    </Table.Row>
+                                </Table.Header>
+                                <Table.Body>
+                                    {upgradeShipActionsTable.map((entry) => (
+                                        <Table.Row
+                                            key={entry.dieRoll}
+                                            onClick={() => handleUpgradeRowClick(entry.dieRoll)}
+                                            backgroundColor={entry.dieRoll === selectedUpgradeRow ? "green.400" : ""}
+                                        >
+                                            <Table.Cell fontWeight="bold"> {entry.dieRoll}</Table.Cell>
+                                            <Table.Cell>{entry.effect}</Table.Cell>
+                                        </Table.Row>
+                                    ))}
+                                </Table.Body>
+                            </Table.Root>
+                            </Box>
                         </Drawer.Body>
                         <Drawer.Footer>
                             <Button variant="outline">Cancel</Button>
-                            <Button>Upgrade</Button>
+                            <Button onClick={() => handleUpgrade()}>Upgrade</Button>
                         </Drawer.Footer>
                         <Drawer.CloseTrigger asChild>
                             <CloseButton size="sm" onClick={() => handleCloseDrawer()} />
