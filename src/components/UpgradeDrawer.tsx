@@ -1,0 +1,110 @@
+import { Text, Button, CloseButton, Drawer, Portal, HStack, Table, Separator, Box } from "@chakra-ui/react";
+import type { Ship } from "../hooks/useShip";
+import { GiSpaceship } from "react-icons/gi";
+import { useState } from "react";
+
+interface Props {
+    setEnforcerState: (ship: Ship) => void;
+}
+
+const UpgradeDrawer = ({ setEnforcerState }: Props) => {
+    const shipsToUpgradeTable = [
+        { npc: "All NPCs", dieRoll: "01 - 04" },
+        { npc: "Merchant", dieRoll: "05 - 06" },
+        { npc: "Enforcer", dieRoll: "07 - 08" },
+        { npc: "Scoundrel", dieRoll: "09 - 10" },
+        { npc: "Sellsword", dieRoll: "11 - 12" },
+    ];
+
+    const levelUpActionsTable = [
+        { dieRoll: "01 - 01", effect: "Add 6 to the movement rate of the NPC." },
+        { dieRoll: "02 - 03", effect: "Add 3 to the movement rate of the NPC." },
+        { dieRoll: "04 - 05", effect: "Attack uses two dice instead of 1. (Reroll for merchant)." },
+        { dieRoll: "06 - 07", effect: "Use next higher attack dice. (Reroll for merchant)." },
+        { dieRoll: "08 - 09", effect: "Defense uses 1 more defense die." },
+        { dieRoll: "10 - 11", effect: "Use the next higher defense dice." },
+        { dieRoll: "12 - 12", effect: "Add another activation chip for this NPC to the bag." },
+    ];
+
+    const [selectedShipUpgradeRow, setShipUpgradeRow] = useState("");
+
+    const handleShipUpgradeRowClick = (index: string) => {
+        setShipUpgradeRow(index);
+    };
+
+    const handleCloseDrawer = () => {
+        setShipUpgradeRow("");
+    };
+
+    return (
+        <Drawer.Root size="md">
+            <Drawer.Trigger asChild>
+                <Button variant="outline" size="sm">
+                    Upgrade Ship
+                </Button>
+            </Drawer.Trigger>
+            <Portal>
+                <Drawer.Backdrop />
+                <Drawer.Positioner>
+                    <Drawer.Content>
+                        <Drawer.Header>
+                            <Drawer.Title>
+                                <HStack>
+                                    <GiSpaceship />
+                                    Ship Upgrades
+                                    <GiSpaceship />
+                                </HStack>
+                            </Drawer.Title>
+                        </Drawer.Header>
+                        <Drawer.Body>
+                            <Text marginBottom={4}>
+                                As the game of XIA progresses into the midgame / endgame, the NPCs become less relevant
+                                and less of a threat to the players. These upgrades will compensate for that.
+                            </Text>
+                            <Text marginBottom={4}>
+                                When an upgrade is triggered, roll a D12 to identify which ship(s) to upgrade. Then, select the matching option below
+                            </Text>
+
+                            <HStack>
+                                <Separator flex="1" />
+                                <Text flexShrink="0">Select A Ship</Text>
+                                <Separator flex="1" />
+                            </HStack>
+                            <Box margin={5} border="2px solid" borderRadius="md">
+                            <Table.Root>
+                                <Table.Header>
+                                    <Table.Row backgroundColor="gray.500">
+                                        <Table.ColumnHeader>Die Roll</Table.ColumnHeader>
+                                        <Table.ColumnHeader>NPC Ship</Table.ColumnHeader>
+                                    </Table.Row>
+                                </Table.Header>
+                                <Table.Body>
+                                    {shipsToUpgradeTable.map((entry) => (
+                                        <Table.Row
+                                            key={entry.npc}
+                                            onClick={() => handleShipUpgradeRowClick(entry.npc)}
+                                            backgroundColor={entry.npc === selectedShipUpgradeRow ? "green.400" : ""}
+                                        >
+                                            <Table.Cell fontWeight="bold"> {entry.dieRoll}</Table.Cell>
+                                            <Table.Cell>{entry.npc}</Table.Cell>
+                                        </Table.Row>
+                                    ))}
+                                </Table.Body>
+                            </Table.Root>
+                            </Box>
+                        </Drawer.Body>
+                        <Drawer.Footer>
+                            <Button variant="outline">Cancel</Button>
+                            <Button>Upgrade</Button>
+                        </Drawer.Footer>
+                        <Drawer.CloseTrigger asChild>
+                            <CloseButton size="sm" onClick={() => handleCloseDrawer()} />
+                        </Drawer.CloseTrigger>
+                    </Drawer.Content>
+                </Drawer.Positioner>
+            </Portal>
+        </Drawer.Root>
+    );
+};
+
+export default UpgradeDrawer;

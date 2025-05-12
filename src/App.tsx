@@ -1,3 +1,4 @@
+import { useState } from "react";
 import { Box, Grid, GridItem } from "@chakra-ui/react";
 import "./App.css";
 import NavBar from "./components/NavBar";
@@ -5,7 +6,8 @@ import Footer from "./components/Footer";
 import ShipDashboard from "./components/ShipDashboard";
 import npcShip from "./data/npcData"
 import type { Ship } from "./hooks/useShip";
-import { useState } from "react";
+import UpgradeDrawer from "./components/UpgradeDrawer"
+
 
 function App() {
     const [enforcer, setEnforcer] = useState(npcShip.find(key => key.name === "Enforcer" ) as Ship)
@@ -24,6 +26,7 @@ function App() {
         >
             <GridItem area="navigation" padding={2}>
                 <NavBar />
+                <UpgradeDrawer setEnforcerState={setEnforcer}/>
             </GridItem>
             <GridItem area="main" padding={2}>
                 <Box>
