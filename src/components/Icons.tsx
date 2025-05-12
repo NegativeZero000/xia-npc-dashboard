@@ -1,5 +1,12 @@
 import { createIcon } from "@chakra-ui/react";
 
+export const dieIndexColorMap: { [key: number]: string} = {
+    6: "blue.600",
+    8: "green.600",
+    12: "yellow.600",
+    20: "red.600"
+};
+
 export const D6 = createIcon({
     displayName: "D6-Segment",
     viewBox: "0 0 100 100",
@@ -69,3 +76,26 @@ export const D20 = createIcon({
         </>
     ),
 });
+
+export const xiaLogo = createIcon({
+    displayName: "XiaLogoFill",
+    viewBox: "0 0 100 100",
+    d: "M2.296 50L25.077 89.461 52.025 49.473 25.405 9.972zM46.772 8.687L63.142 32.976 76.461 13.209 73.853 8.687zM86.1 29.898L73.583 48.471 87.05 68.454 97.703 50zM76.791 86.224L62.467 64.968 44.713 91.313 73.853 91.313z",
+});
+
+
+interface Props {
+    dieIndex: number;
+}
+
+const components = {
+    "d6": D6,
+    "d8": D8,
+    "d10": D10,
+    "d12": D12
+};
+
+export const DiceIcon = ({ dieIndex }: Props) => {
+    const SpecificDie = components["d" + dieIndex.toString() as keyof typeof components];
+    if (SpecificDie) return <SpecificDie size="lg" color={dieIndexColorMap[dieIndex]}/>
+};

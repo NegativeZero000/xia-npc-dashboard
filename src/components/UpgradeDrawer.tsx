@@ -1,7 +1,8 @@
-import { Text, Button, CloseButton, Drawer, Portal, HStack, Table, Separator, Box } from "@chakra-ui/react";
-import type { Ship } from "../hooks/useShip";
 import { GiSpaceship } from "react-icons/gi";
 import { useState } from "react";
+import { Text, Button, CloseButton, Drawer, Portal, HStack, Table, Separator, Box } from "@chakra-ui/react";
+import { DiceIcon } from "./Icons";
+import type { Ship } from "../hooks/useShip";
 
 interface Props {
     setEnforcerState: (ship: Ship) => void;
@@ -72,7 +73,7 @@ const UpgradeDrawer = ({ setEnforcerState }: Props) => {
                                 and less of a threat to the players. These upgrades will compensate for that.
                             </Text>
                             <Text marginBottom={4}>
-                                When an upgrade is triggered, roll a D12 to identify which ship(s) to upgrade. Then, select the matching option below
+                                When an upgrade is triggered, roll 1 <DiceIcon dieIndex={12}/> to identify which ship(s) to upgrade. Then, select the matching option below
                             </Text>
 
                             <HStack>
@@ -102,6 +103,11 @@ const UpgradeDrawer = ({ setEnforcerState }: Props) => {
                                 </Table.Body>
                             </Table.Root>
                             </Box>
+                            <HStack>
+                                <Separator flex="1" />
+                                <Text flexShrink="0">Select an Upgrade</Text>
+                                <Separator flex="1" />
+                            </HStack>
                             <Box margin={5} border="2px solid" borderRadius="md">
                             <Table.Root>
                                 <Table.Header>
