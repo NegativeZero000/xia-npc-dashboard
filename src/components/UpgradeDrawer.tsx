@@ -29,6 +29,7 @@ const UpgradeDrawer = ({ setEnforcerState }: Props) => {
 
     const [selectedShipUpgradeRow, setSelectedShipUpgradeRow] = useState("");
     const [selectedUpgradeRow, setSelectedUpgradeRow] = useState("");
+    const [drawerOpen, setDrawerOpen] = useState(false)
 
     const handleShipUpgradeRowClick = (index: string) => {
         setSelectedShipUpgradeRow(index);
@@ -40,6 +41,7 @@ const UpgradeDrawer = ({ setEnforcerState }: Props) => {
     const handleCloseDrawer = () => {
         setSelectedShipUpgradeRow("");
         setSelectedUpgradeRow("");
+        setDrawerOpen(false)
     };
 
     const handleUpgrade = () => {
@@ -48,7 +50,7 @@ const UpgradeDrawer = ({ setEnforcerState }: Props) => {
     }
 
     return (
-        <Drawer.Root size="md">
+        <Drawer.Root size="md" open={drawerOpen} onOpenChange={(event) => setDrawerOpen(event.open)}>
             <Drawer.Trigger asChild>
                 <Button variant="outline" size="sm">
                     Upgrade Ship
@@ -132,7 +134,7 @@ const UpgradeDrawer = ({ setEnforcerState }: Props) => {
                             </Box>
                         </Drawer.Body>
                         <Drawer.Footer>
-                            <Button variant="outline">Cancel</Button>
+                            <Button variant="outline" onClick={() => handleCloseDrawer()}>Cancel</Button>
                             <Button onClick={() => handleUpgrade()}>Upgrade</Button>
                         </Drawer.Footer>
                         <Drawer.CloseTrigger asChild>
