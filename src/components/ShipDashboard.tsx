@@ -10,6 +10,13 @@ interface Props {
 }
 
 const ShipDashboard = ({ ship, setShip }: Props) => {
+    const dieIndexColorMap: { [key: number]: string} = {
+        6: "blue.600",
+        8: "green.600",
+        12: "yellow.600",
+        20: "red.600"
+    };
+
     const incrementLifePoints = () => {
         setShip({ ...ship, lifePoints: ship.lifePoints + 1 });
     };
@@ -47,13 +54,13 @@ const ShipDashboard = ({ ship, setShip }: Props) => {
             <Stack textAlign="left">
                 <Text fontSize={headingSize}>Attack</Text>
                 <Text fontSize="large">
-                    {ship.numberOfAttackDice}<DiceIcon dieIndex={ship.attackDie} color="red.200"/> {ship.attackType}
+                    {ship.numberOfAttackDice}<DiceIcon dieIndex={ship.attackDie} color={dieIndexColorMap[ship.attackDie]}/> {ship.attackType}
                 </Text>
             </Stack>
             <Stack textAlign="left">
                 <Text fontSize={headingSize}>Defence</Text>
                 <Text fontSize="large">
-                    {ship.numberOfDefenceDice}<DiceIcon dieIndex={ship.defenceDie} color="blue.600"/> {ship.defenceType}
+                    {ship.numberOfDefenceDice}<DiceIcon dieIndex={ship.defenceDie} color={dieIndexColorMap[ship.defenceDie]}/> {ship.defenceType}
                 </Text>
             </Stack>
             <Stack textAlign="left">
