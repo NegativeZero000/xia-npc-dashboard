@@ -1,8 +1,7 @@
 import { Button, Group, HStack, Stack, Text } from "@chakra-ui/react";
 import { FaMinus, FaPlus } from "react-icons/fa";
 import type { Ship } from "../hooks/useShip";
-import { RiMoneyDollarBoxFill } from "react-icons/ri";
-import { DiceIcon } from "./Icons";
+import { Credits, DiceIcon } from "./Icons";
 
 interface Props {
     ship: Ship;
@@ -47,13 +46,15 @@ const ShipDashboard = ({ ship, setShip }: Props) => {
             <Stack textAlign="left">
                 <Text fontSize={headingSize}>Attack</Text>
                 <Text fontSize="large">
-                    {ship.numberOfAttackDice}<DiceIcon dieIndex={ship.attackDie} /> {ship.attackType}
+                    {ship.numberOfAttackDice}
+                    <DiceIcon dieIndex={ship.attackDie} /> {ship.attackType}
                 </Text>
             </Stack>
             <Stack textAlign="left">
                 <Text fontSize={headingSize}>Defence</Text>
                 <Text fontSize="large">
-                    {ship.numberOfDefenceDice}<DiceIcon dieIndex={ship.defenceDie} /> {ship.defenceType}
+                    {ship.numberOfDefenceDice}
+                    <DiceIcon dieIndex={ship.defenceDie} /> {ship.defenceType}
                 </Text>
             </Stack>
             <Stack textAlign="left">
@@ -71,11 +72,13 @@ const ShipDashboard = ({ ship, setShip }: Props) => {
                 </HStack>
             </Stack>
             <Stack textAlign="left">
-                <Text fontSize={headingSize}>Credits</Text>
+                <Stack textAlign="left">
+                    <Text fontSize={headingSize}>Credits</Text>
 
-                <Text fontSize="large" wordWrap="normal">
-                    {ship.credits * 1000} <RiMoneyDollarBoxFill />
-                </Text>
+                    <Text fontSize="large" wordWrap="normal">
+                        {ship.credits * 1000} <Credits size="md" color="gray.400" />
+                    </Text>
+                </Stack>
                 <HStack>
                     <Group attached>
                         <Button colorPalette="red" variant="subtle" size="xs" onClick={decrementCredits}>
