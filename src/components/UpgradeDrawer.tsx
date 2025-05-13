@@ -135,7 +135,7 @@ const UpgradeDrawer = ({ setEnforcerState }: Props) => {
                         </Drawer.Body>
                         <Drawer.Footer>
                             <Button variant="outline" onClick={() => handleCloseDrawer()}>Cancel</Button>
-                            <Button onClick={() => handleUpgrade()}>Upgrade</Button>
+                            <Button onClick={() => handleUpgrade() } disabled={selectedUpgradeRow != "" && selectedShipUpgradeRow != "" ? false : true} >Upgrade</Button>
                         </Drawer.Footer>
                         <Drawer.CloseTrigger asChild>
                             <CloseButton size="sm" onClick={() => handleCloseDrawer()} />
