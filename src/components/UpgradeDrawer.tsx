@@ -30,10 +30,15 @@ const UpgradeDrawer = ({
 
     // Load in the die rolls for each of the ships.
     [enforcer, merchant, scoundrel, sellsword].forEach((ship) =>
-        shipsToUpgrade.push({ id: ship.id, dieRollStart: ship.validUpgradeDieRollStart, dieRollEnd: ship.validUpgradeDieRollEnd, npc: ship.name })
+        shipsToUpgrade.push({
+            id: ship.id,
+            dieRollStart: ship.validUpgradeDieRollStart,
+            dieRollEnd: ship.validUpgradeDieRollEnd,
+            npc: ship.name,
+        })
     );
 
-    shipsToUpgrade.sort((a,b) => a.dieRollStart - b.dieRollStart)
+    shipsToUpgrade.sort((a, b) => a.dieRollStart - b.dieRollStart);
 
     const upgradeShipActions = [
         { id: 1, dieRoll: "01 - 01", effect: "Add 6 to the movement rate of the NPC." },
@@ -61,16 +66,66 @@ const UpgradeDrawer = ({
     };
 
     const handleCloseDrawer = () => {
-        setSelectedShipUpgradeRow(0);
-        setSelectedUpgradeRow(0);
+        setSelectedShipUpgradeRow(-1);
+        setSelectedUpgradeRow(-1);
         setDrawerOpen(false);
         setShowErrorAlert(false);
     };
 
-
-
-    function increaseShipMovement( ship: Ship, shipState: any, rateOfChange: number) {
+    function increaseShipMovement(ship: Ship, shipState: any, rateOfChange: number) {
         shipState({ ...ship, movementRate: ship.movementRate + rateOfChange });
+    }
+
+    function increaseShipNumberOfDice(ship: Ship, shipState: any, dieType: string) {
+        if (validDieType(dieType)) {
+            switch (dieType.toLowerCase()) {
+                case "attack": {
+                    // Attack dice cannot be increased past 2.
+                    if (ship.numberOfAttackDice === 1)
+                        shipState({ ...ship, numberOfAttackDice: ship.numberOfAttackDice + 1 });
+                    break;
+                }
+                case "defence": {
+                    shipState({ ...ship, numberOfDefenceDice: ship.numberOfDefenceDice + 1 });
+                    break;
+                }
+            }
+        }
+    }
+
+    function addActivationChip(ship: Ship, shipState: any, rateOfChange: number) {
+        shipState({ ...ship, numberOfActivationChips: ship.numberOfActivationChips + rateOfChange });
+    }
+
+    function validDieType(dieType: string) {
+        return dieType.toLowerCase() === "attack" || dieType.toLowerCase() === "defence" ? true : false;
+    }
+
+    function nextDie(dieIndex: number) {
+        // Given a dieIndex e.g. 6, get the next higher die and return its index
+        const nextDieMap: Record<number, number> = {
+            4: 6,
+            6: 8,
+            8: 12,
+            12: 20,
+        };
+
+        return dieIndex < 20 ? nextDieMap[dieIndex] : dieIndex;
+    }
+
+    function increaseDieType(ship: Ship, shipState: any, dieType: string) {
+        if (validDieType(dieType)) {
+            switch (dieType.toLowerCase()) {
+                case "attack": {
+                    shipState({ ...ship, attackDie: nextDie(ship.attackDie) });
+                    break;
+                }
+                case "defence": {
+                    shipState({ ...ship, defenceDie: nextDie(ship.defenceDie) });
+                    break;
+                }
+            }
+        }
     }
 
     const handleUpgradeButtonClick = () => {
@@ -92,25 +147,49 @@ const UpgradeDrawer = ({
             // This needs to upgrade each ship
             switch (selectedUpgradeRow) {
                 case 1:
-                    increaseShipMovement(enforcer, setEnforcerState, 6)
-                    increaseShipMovement(merchant, setMerchantState, 6)
-                    increaseShipMovement(scoundrel, setScoundrelState, 6)
-                    increaseShipMovement(sellsword, setSellswordState, 6)
+                    increaseShipMovement(enforcer, setEnforcerState, 6);
+                    increaseShipMovement(merchant, setMerchantState, 6);
+                    increaseShipMovement(scoundrel, setScoundrelState, 6);
+                    increaseShipMovement(sellsword, setSellswordState, 6);
                     break;
                 case 2:
+                    increaseShipMovement(enforcer, setEnforcerState, 3);
+                    increaseShipMovement(merchant, setMerchantState, 3);
+                    increaseShipMovement(scoundrel, setScoundrelState, 3);
+                    increaseShipMovement(sellsword, setSellswordState, 3);
                     break;
                 case 3:
+                    increaseShipNumberOfDice(enforcer, setEnforcerState, "attack");
+                    increaseShipNumberOfDice(merchant, setMerchantState, "attack");
+                    increaseShipNumberOfDice(scoundrel, setScoundrelState, "attack");
+                    increaseShipNumberOfDice(sellsword, setSellswordState, "attack");
                     break;
                 case 4:
+                    increaseDieType(enforcer, setEnforcerState, "attack");
+                    increaseDieType(merchant, setMerchantState, "attack");
+                    increaseDieType(scoundrel, setScoundrelState, "attack");
+                    increaseDieType(sellsword, setSellswordState, "attack");
                     break;
                 case 5:
+                    increaseShipNumberOfDice(enforcer, setEnforcerState, "defence");
+                    increaseShipNumberOfDice(merchant, setMerchantState, "defence");
+                    increaseShipNumberOfDice(scoundrel, setScoundrelState, "defence");
+                    increaseShipNumberOfDice(sellsword, setSellswordState, "defence");
                     break;
                 case 6:
+                    increaseDieType(enforcer, setEnforcerState, "defence");
+                    increaseDieType(merchant, setMerchantState, "defence");
+                    increaseDieType(scoundrel, setScoundrelState, "defence");
+                    increaseDieType(sellsword, setSellswordState, "defence");
                     break;
                 case 7:
+                    addActivationChip(enforcer, setEnforcerState, 1);
+                    addActivationChip(merchant, setMerchantState, 1);
+                    addActivationChip(scoundrel, setScoundrelState,1);
+                    addActivationChip(sellsword, setSellswordState, 1);
                     break;
             }
-        } else {   
+        } else {
             // This needs to upgrade the single selected ship
 
             switch (selectedUpgradeRow) {
@@ -130,11 +209,10 @@ const UpgradeDrawer = ({
                     break;
             }
         }
-        
 
         // Perform the upgrade
         // Clear the states and close the drawer
-        handleCloseDrawer()
+        handleCloseDrawer();
     };
 
     return (
@@ -192,7 +270,11 @@ const UpgradeDrawer = ({
                                                         entry.id === selectedShipUpgradeRow ? "green.400" : ""
                                                     }
                                                 >
-                                                    <Table.Cell fontWeight="bold"> {(entry.dieRollStart.toString()).padStart(2, "0")} - {(entry.dieRollEnd.toString()).padStart(2, "0")}</Table.Cell>
+                                                    <Table.Cell fontWeight="bold">
+                                                        {" "}
+                                                        {entry.dieRollStart.toString().padStart(2, "0")} -{" "}
+                                                        {entry.dieRollEnd.toString().padStart(2, "0")}
+                                                    </Table.Cell>
                                                     <Table.Cell>{entry.npc}</Table.Cell>
                                                 </Table.Row>
                                             ))}
