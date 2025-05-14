@@ -1,4 +1,5 @@
 export interface Ship {
+    id: number
     name: string;
     spawn: string;
     movementRate: number;
@@ -17,4 +18,7 @@ export interface Ship {
     rewardNote: string;
     targetPath: string;
     targetPreference: string;
+    numberOfActivationChips: number
+    validUpgradeDieRollStart: number
+    validUpgradeDieRollEnd: number
 }
