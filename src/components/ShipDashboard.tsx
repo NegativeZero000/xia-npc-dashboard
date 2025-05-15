@@ -9,7 +9,7 @@ interface Props {
 }
 
 const ShipDashboard = ({ ship, shipManager }: Props) => {
-    const {  } = shipManager
+    const { adjustLifePoints } = shipManager
 
     const headingSize = "sm";
     return (
@@ -45,10 +45,14 @@ const ShipDashboard = ({ ship, shipManager }: Props) => {
                 <Text fontSize="large"> {ship.lifePoints}</Text>
                 <HStack>
                     <Group attached>
-                        <Button colorPalette="red" variant="subtle" size="xs" onClick={() => {}}>
+                        <Button colorPalette="red" variant="subtle" size="xs" onClick={() => {
+                            adjustLifePoints(ship.id, -1)
+                        }}>
                             <FaMinus />
                         </Button>
-                        <Button colorPalette="green" variant="subtle" size="xs" onClick={() => {}}>
+                        <Button colorPalette="green" variant="subtle" size="xs" onClick={() => {
+                            adjustLifePoints(ship.id, 1)
+                        }}>
                             <FaPlus />
                         </Button>
                     </Group>
