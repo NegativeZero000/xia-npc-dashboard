@@ -9,7 +9,7 @@ interface Props {
 }
 
 const ShipDashboard = ({ ship, shipManager }: Props) => {
-    const { adjustLifePoints, adjustCredits } = shipManager;
+    const { adjustShipLifePoints, adjustShipCredits } = shipManager;
 
     const headingSize = "sm";
     return (
@@ -50,7 +50,7 @@ const ShipDashboard = ({ ship, shipManager }: Props) => {
                             variant="subtle"
                             size="xs"
                             onClick={() => {
-                                adjustLifePoints(ship.id, -1);
+                                adjustShipLifePoints(ship.id, -1);
                             }}
                         >
                             <FaMinus />
@@ -60,7 +60,7 @@ const ShipDashboard = ({ ship, shipManager }: Props) => {
                             variant="subtle"
                             size="xs"
                             onClick={() => {
-                                adjustLifePoints(ship.id, 1);
+                                adjustShipLifePoints(ship.id, 1);
                             }}
                         >
                             <FaPlus />
@@ -83,7 +83,7 @@ const ShipDashboard = ({ ship, shipManager }: Props) => {
                             variant="subtle"
                             size="xs"
                             onClick={() => {
-                                adjustCredits(ship.id, -1);
+                                adjustShipCredits(ship.id, -1);
                             }}
                         >
                             <FaMinus />
@@ -93,7 +93,7 @@ const ShipDashboard = ({ ship, shipManager }: Props) => {
                             variant="subtle"
                             size="xs"
                             onClick={() => {
-                                adjustCredits(ship.id, 1);
+                                adjustShipCredits(ship.id, 1);
                             }}
                         >
                             <FaPlus />

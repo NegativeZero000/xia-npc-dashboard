@@ -4,9 +4,9 @@ export interface UseShips {
     ships: Ship[];
     addShip: (ship: Ship) => void;
     removeShip: (id: number) => void;
-    adjustMovementRate: (id: number, change: number) => void;
-    adjustLifePoints: (id: number, change: number) => void;
-    adjustCredits: (id: number, change: number) => void;
+    adjustShipMovementRate: (id: number, change: number) => void;
+    adjustShipLifePoints: (id: number, change: number) => void;
+    adjustShipCredits: (id: number, change: number) => void;
 }
 
 export type Ship = {
@@ -79,14 +79,14 @@ export const useShips = (): UseShips => {
 
     const removeShip = (id: number) => dispatch({ type: "REMOVE_SHIP", payload: { id } });
 
-    const adjustMovementRate = (id: number, change: number) =>
+    const adjustShipMovementRate = (id: number, change: number) =>
         dispatch({ type: "UPDATE_MOVEMENT_RATE", payload: { id, change } });
 
-    const adjustLifePoints = (id: number, change: number) =>
+    const adjustShipLifePoints = (id: number, change: number) =>
         dispatch({ type: "UPDATE_LIFE_POINTS", payload: { id, change } });
 
-    const adjustCredits = (id: number, change: number) =>
+    const adjustShipCredits = (id: number, change: number) =>
         dispatch({ type: "UPDATE_CREDITS", payload: { id, change } });
 
-    return { ships, addShip, removeShip, adjustMovementRate, adjustLifePoints , adjustCredits};
+    return { ships, addShip, removeShip, adjustShipMovementRate, adjustShipLifePoints , adjustShipCredits};
 };
