@@ -6,6 +6,7 @@ import npcShips from "./data/npcData";
 import { useShips } from "./hooks/useShips"
 import NavBar from "./components/NavBar";
 import Footer from "./components/Footer";
+import ShipDashboard from "./components/ShipDashboard";
 
 
 function App() {
@@ -41,7 +42,7 @@ function App() {
                     <Box>
                         {
                             ships.map((ship) => (
-                                <Text key={ship.id}>{ship.name}</Text>
+                                <ShipDashboard key={ship.id} ship={ship}></ShipDashboard>
                             ))
                         }
                     </Box>

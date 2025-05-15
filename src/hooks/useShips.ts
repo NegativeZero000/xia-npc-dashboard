@@ -1,6 +1,6 @@
 import { useReducer } from "react";
 
-type Ship = {
+export type Ship = {
     id: number;
     name: string;
     spawn: string;

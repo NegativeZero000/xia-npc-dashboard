@@ -1,31 +1,13 @@
-import { Button, Group, HStack, Stack, Text } from "@chakra-ui/react";
 import { FaMinus, FaPlus } from "react-icons/fa";
+import { Button, Group, HStack, Stack, Text } from "@chakra-ui/react";
 import { Credits, DiceIcon } from "./Icons";
+import type { Ship } from "../hooks/useShips"
 
 interface Props {
     ship: Ship;
-    setShip: (ship: Ship) => void;
 }
 
-const ShipDashboard = ({ ship, setShip }: Props) => {
-    const incrementLifePoints = () => {
-        setShip({ ...ship, lifePoints: ship.lifePoints + 1 });
-    };
-
-    const decrementLifePoints = () => {
-        if (ship.lifePoints > 0) {
-            setShip({ ...ship, lifePoints: ship.lifePoints - 1 });
-        }
-    };
-    const incrementCredits = () => {
-        setShip({ ...ship, credits: ship.credits + 1 });
-    };
-
-    const decrementCredits = () => {
-        if (ship.credits > 0) {
-            setShip({ ...ship, credits: ship.credits - 1 });
-        }
-    };
+const ShipDashboard = ({ ship }: Props) => {
 
     const headingSize = "sm";
     return (
@@ -61,10 +43,10 @@ const ShipDashboard = ({ ship, setShip }: Props) => {
                 <Text fontSize="large"> {ship.lifePoints}</Text>
                 <HStack>
                     <Group attached>
-                        <Button colorPalette="red" variant="subtle" size="xs" onClick={decrementLifePoints}>
+                        <Button colorPalette="red" variant="subtle" size="xs" onClick={() => {}}>
                             <FaMinus />
                         </Button>
-                        <Button colorPalette="green" variant="subtle" size="xs" onClick={incrementLifePoints}>
+                        <Button colorPalette="green" variant="subtle" size="xs" onClick={() => {}}>
                             <FaPlus />
                         </Button>
                     </Group>
@@ -80,10 +62,10 @@ const ShipDashboard = ({ ship, setShip }: Props) => {
                 </Stack>
                 <HStack>
                     <Group attached>
-                        <Button colorPalette="red" variant="subtle" size="xs" onClick={decrementCredits}>
+                        <Button colorPalette="red" variant="subtle" size="xs" onClick={() => {}}>
                             <FaMinus />
                         </Button>
-                        <Button colorPalette="green" variant="subtle" size="xs" onClick={incrementCredits}>
+                        <Button colorPalette="green" variant="subtle" size="xs" onClick={() => {}}>
                             <FaPlus />
                         </Button>
                     </Group>
