@@ -1,15 +1,15 @@
 import { FaMinus, FaPlus } from "react-icons/fa";
 import { Button, Group, HStack, Stack, Text } from "@chakra-ui/react";
 import { Credits, DiceIcon } from "./Icons";
-import type { Ship, UseShips } from "../hooks/useShips"
+import type { Ship, UseShips } from "../hooks/useShips";
 
 interface Props {
-    ship: Ship
+    ship: Ship;
     shipManager: UseShips;
 }
 
 const ShipDashboard = ({ ship, shipManager }: Props) => {
-    const { adjustLifePoints } = shipManager
+    const { adjustLifePoints, adjustCredits } = shipManager;
 
     const headingSize = "sm";
     return (
@@ -45,14 +45,24 @@ const ShipDashboard = ({ ship, shipManager }: Props) => {
                 <Text fontSize="large"> {ship.lifePoints}</Text>
                 <HStack>
                     <Group attached>
-                        <Button colorPalette="red" variant="subtle" size="xs" onClick={() => {
-                            adjustLifePoints(ship.id, -1)
-                        }}>
+                        <Button
+                            colorPalette="red"
+                            variant="subtle"
+                            size="xs"
+                            onClick={() => {
+                                adjustLifePoints(ship.id, -1);
+                            }}
+                        >
                             <FaMinus />
                         </Button>
-                        <Button colorPalette="green" variant="subtle" size="xs" onClick={() => {
-                            adjustLifePoints(ship.id, 1)
-                        }}>
+                        <Button
+                            colorPalette="green"
+                            variant="subtle"
+                            size="xs"
+                            onClick={() => {
+                                adjustLifePoints(ship.id, 1);
+                            }}
+                        >
                             <FaPlus />
                         </Button>
                     </Group>
@@ -68,10 +78,24 @@ const ShipDashboard = ({ ship, shipManager }: Props) => {
                 </Stack>
                 <HStack>
                     <Group attached>
-                        <Button colorPalette="red" variant="subtle" size="xs" onClick={() => {}}>
+                        <Button
+                            colorPalette="red"
+                            variant="subtle"
+                            size="xs"
+                            onClick={() => {
+                                adjustCredits(ship.id, -1);
+                            }}
+                        >
                             <FaMinus />
                         </Button>
-                        <Button colorPalette="green" variant="subtle" size="xs" onClick={() => {}}>
+                        <Button
+                            colorPalette="green"
+                            variant="subtle"
+                            size="xs"
+                            onClick={() => {
+                                adjustCredits(ship.id, 1);
+                            }}
+                        >
                             <FaPlus />
                         </Button>
                     </Group>

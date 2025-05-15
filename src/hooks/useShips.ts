@@ -6,6 +6,7 @@ export interface UseShips {
     removeShip: (id: number) => void;
     adjustMovementRate: (id: number, change: number) => void;
     adjustLifePoints: (id: number, change: number) => void;
+    adjustCredits: (id: number, change: number) => void;
 }
 
 export type Ship = {
@@ -38,6 +39,7 @@ type Action =
     | { type: "REMOVE_SHIP"; payload: { id: number } }
     | { type: "UPDATE_MOVEMENT_RATE"; payload: { id: number; change: number } }
     | { type: "UPDATE_LIFE_POINTS"; payload: { id: number; change: number } }
+    | { type: "UPDATE_CREDITS"; payload: { id: number; change: number } }
     | { type: "UPDATE_ATTACK_TYPE"; payload: { id: number } }
     | { type: "UPDATE_ATTACK_NUMBER"; payload: { id: number } };
 
@@ -59,6 +61,12 @@ function reducer(state: Ship[], action: Action) {
                     ? { ...ship, lifePoints: ship.lifePoints + action.payload.change }
                     : ship
             );
+        case "UPDATE_CREDITS":
+            return state.map((ship) =>
+                ship.id === action.payload.id
+                    ? { ...ship, credits: ship.credits + action.payload.change }
+                    : ship
+            );
         default:
             return state;
     }
@@ -77,5 +85,8 @@ export const useShips = (): UseShips => {
     const adjustLifePoints = (id: number, change: number) =>
         dispatch({ type: "UPDATE_LIFE_POINTS", payload: { id, change } });
 
-    return { ships, addShip, removeShip, adjustMovementRate, adjustLifePoints };
+    const adjustCredits = (id: number, change: number) =>
+        dispatch({ type: "UPDATE_CREDITS", payload: { id, change } });
+
+    return { ships, addShip, removeShip, adjustMovementRate, adjustLifePoints , adjustCredits};
 };
