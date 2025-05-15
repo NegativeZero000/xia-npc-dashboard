@@ -7,6 +7,7 @@ export interface UseShips {
     adjustShipMovementRate: (id: number, change: number) => void;
     adjustShipLifePoints: (id: number, change: number) => void;
     adjustShipCredits: (id: number, change: number) => void;
+    adjustShipBounties: (id: number, change: number) => void;
 }
 
 export type Ship = {
@@ -40,6 +41,7 @@ type Action =
     | { type: "UPDATE_MOVEMENT_RATE"; payload: { id: number; change: number } }
     | { type: "UPDATE_LIFE_POINTS"; payload: { id: number; change: number } }
     | { type: "UPDATE_CREDITS"; payload: { id: number; change: number } }
+    | { type: "UPDATE_BOUNTIES"; payload: { id: number; change: number } }
     | { type: "UPDATE_ATTACK_TYPE"; payload: { id: number } }
     | { type: "UPDATE_ATTACK_NUMBER"; payload: { id: number } };
 
@@ -67,6 +69,12 @@ function reducer(state: Ship[], action: Action) {
                     ? { ...ship, credits: ship.credits + action.payload.change }
                     : ship
             );
+        case "UPDATE_BOUNTIES":
+            return state.map((ship) =>
+                ship.id === action.payload.id
+                    ? { ...ship, bounties: ship.bounties + action.payload.change }
+                    : ship
+            );
         default:
             return state;
     }
@@ -88,5 +96,8 @@ export const useShips = (): UseShips => {
     const adjustShipCredits = (id: number, change: number) =>
         dispatch({ type: "UPDATE_CREDITS", payload: { id, change } });
 
-    return { ships, addShip, removeShip, adjustShipMovementRate, adjustShipLifePoints , adjustShipCredits};
+    const adjustShipBounties = (id: number, change: number) =>
+        dispatch({ type: "UPDATE_BOUNTIES", payload: { id, change } });
+
+    return { ships, addShip, removeShip, adjustShipMovementRate, adjustShipLifePoints , adjustShipCredits, adjustShipBounties};
 };
