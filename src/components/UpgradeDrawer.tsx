@@ -2,7 +2,6 @@ import { GiSpaceship } from "react-icons/gi";
 import { useState } from "react";
 import { Text, Button, CloseButton, Drawer, Portal, HStack, Table, Separator, Box } from "@chakra-ui/react";
 import { DiceIcon } from "./Icons";
-import type { Ship } from "../hooks/useShip";
 import { Toaster } from "./ui/toaster";
 
 interface Props {

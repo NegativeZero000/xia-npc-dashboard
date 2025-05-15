@@ -1,18 +1,27 @@
-import { useState } from "react";
-import { Box, Grid, GridItem } from "@chakra-ui/react";
+
+import { useEffect, useRef, useState } from "react";
 import "./App.css";
+import { Box, Grid, GridItem, Text } from "@chakra-ui/react";
+import npcShips from "./data/npcData";
+import { useShips } from "./hooks/useShips"
 import NavBar from "./components/NavBar";
 import Footer from "./components/Footer";
-import ShipDashboard from "./components/ShipDashboard";
-import npcShip from "./data/npcData";
-import type { Ship } from "./hooks/useShip";
-import UpgradeDrawer from "./components/UpgradeDrawer";
+
 
 function App() {
-    const [enforcer, setEnforcer] = useState(npcShip.find((key) => key.name === "Enforcer") as Ship);
-    const [merchant, setMerchant] = useState(npcShip.find((key) => key.name === "Merchant") as Ship);
-    const [scoundrel, setScoundrel] = useState(npcShip.find((key) => key.name === "Scoundrel") as Ship);
-    const [sellsword, setSellsword] = useState(npcShip.find((key) => key.name === "Sellsword") as Ship);
+    // Import the ships from data
+    const { ships, addShip } = useShips()
+    const devInitialized = useRef(false)
+
+    useEffect(() => {
+        // Prevent useEffect from running twice while in dev mode. 
+        if (devInitialized.current) return
+        devInitialized.current = true
+
+        npcShips.map((ship) => {
+            addShip(ship)
+        }
+    )}, [])
 
     return (
         <>
@@ -26,14 +35,15 @@ function App() {
             >
                 <GridItem area="navigation" padding={2}>
                     <NavBar />
-                    <UpgradeDrawer enforcer={enforcer} setEnforcerState={setEnforcer} merchant={merchant} setMerchantState={setMerchant} scoundrel={scoundrel} setScoundrelState={setScoundrel} sellsword={sellsword} setSellswordState={setSellsword}/>
+                    {/* <UpgradeDrawer enforcer={enforcer} setEnforcerState={setEnforcer} merchant={merchant} setMerchantState={setMerchant} scoundrel={scoundrel} setScoundrelState={setScoundrel} sellsword={sellsword} setSellswordState={setSellsword}/> */}
                 </GridItem>
                 <GridItem area="main" padding={2}>
                     <Box>
-                        <ShipDashboard ship={enforcer} setShip={setEnforcer} />
-                        <ShipDashboard ship={merchant} setShip={setMerchant} />
-                        <ShipDashboard ship={scoundrel} setShip={setScoundrel} />
-                        <ShipDashboard ship={sellsword} setShip={setSellsword} />
+                        {
+                            ships.map((ship) => (
+                                <Text key={ship.id}>{ship.name}</Text>
+                            ))
+                        }
                     </Box>
                 </GridItem>
                 <GridItem area="footer" padding={2}>

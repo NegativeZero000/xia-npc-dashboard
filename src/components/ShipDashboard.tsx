@@ -1,6 +1,5 @@
 import { Button, Group, HStack, Stack, Text } from "@chakra-ui/react";
 import { FaMinus, FaPlus } from "react-icons/fa";
-import type { Ship } from "../hooks/useShip";
 import { Credits, DiceIcon } from "./Icons";
 
 interface Props {
