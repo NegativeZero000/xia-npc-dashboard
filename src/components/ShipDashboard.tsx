@@ -1,13 +1,15 @@
 import { FaMinus, FaPlus } from "react-icons/fa";
 import { Button, Group, HStack, Stack, Text } from "@chakra-ui/react";
 import { Credits, DiceIcon } from "./Icons";
-import type { Ship } from "../hooks/useShips"
+import type { Ship, UseShips } from "../hooks/useShips"
 
 interface Props {
-    ship: Ship;
+    ship: Ship
+    shipManager: UseShips;
 }
 
-const ShipDashboard = ({ ship }: Props) => {
+const ShipDashboard = ({ ship, shipManager }: Props) => {
+    const {  } = shipManager
 
     const headingSize = "sm";
     return (

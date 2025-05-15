@@ -1,5 +1,12 @@
 import { useReducer } from "react";
 
+export interface UseShips {
+    ships: Ship[];
+    addShip: (ship: Ship) => void;
+    removeShip: (id: number) => void;
+    updateMovementRate: (id: number, speed: number) => void;
+}
+
 export type Ship = {
     id: number;
     name: string;
@@ -49,7 +56,7 @@ function reducer(state: Ship[], action: Action) {
     }
 };
 
-export const useShips = () => {
+export const useShips = (): UseShips => {
     const [ships, dispatch] = useReducer(reducer, []);
 
     const addShip = (ship: Ship) => dispatch({ type: "ADD_SHIP", payload: { ship } });
