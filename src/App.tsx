@@ -1,8 +1,8 @@
 import { useEffect, useRef } from "react";
 import "./App.css";
 import { Box, Grid, GridItem } from "@chakra-ui/react";
-import npcShips from "./data/npcData";
-import { useShips } from "./hooks/useShips";
+import rawShips from "./data/npcData";
+import { useShips, type Ship } from "./hooks/useShips";
 import NavBar from "./components/NavBar";
 import Footer from "./components/Footer";
 import ShipDashboard from "./components/ShipDashboard";
@@ -11,6 +11,7 @@ import UpgradeDrawer from "./components/UpgradeDrawer";
 function App() {
     const shipManager = useShips();
     const { ships, addShip } = shipManager
+    const npcShips = rawShips as Ship[];
     
     // Import the ships from data
     const devInitialized = useRef(false);

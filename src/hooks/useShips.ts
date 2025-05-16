@@ -1,4 +1,4 @@
-import { useReducer } from "react";
+import { useReducer, type Reducer } from "react";
 
 export interface UseShips {
     ships: Ship[];
@@ -8,7 +8,11 @@ export interface UseShips {
     adjustShipLifePoints: (id: number, change: number) => void;
     adjustShipCredits: (id: number, change: number) => void;
     adjustShipBounties: (id: number, change: number) => void;
+    adjustShipAttackDie: (id: number) => void;
 }
+
+const allowedValues = [4, 6, 8, 12, 20] as const;
+type AllowedDieValues = (typeof allowedValues)[number];
 
 export type Ship = {
     id: number;
@@ -18,10 +22,10 @@ export type Ship = {
     altenateMovementRate: number;
     altenateMovementCondition: string;
     attackType: string;
-    attackDie: number;
+    attackDie: AllowedDieValues;
     numberOfAttackDice: number;
     defenceType: string;
-    defenceDie: number;
+    defenceDie: AllowedDieValues;
     numberOfDefenceDice: number;
     lifePoints: number;
     baseRewardFamePoints: number;
@@ -42,8 +46,25 @@ type Action =
     | { type: "UPDATE_LIFE_POINTS"; payload: { id: number; change: number } }
     | { type: "UPDATE_CREDITS"; payload: { id: number; change: number } }
     | { type: "UPDATE_BOUNTIES"; payload: { id: number; change: number } }
-    | { type: "UPDATE_ATTACK_TYPE"; payload: { id: number } }
-    | { type: "UPDATE_ATTACK_NUMBER"; payload: { id: number } };
+    | { type: "UPDATE_ATTACK_DIE"; payload: { id: number } }
+    | { type: "UPDATE_ATTACK_NUMBER"; payload: { id: number } }
+    | { type: "UPDATE_DEFENCE_DIE"; payload: { id: number } }
+    | { type: "UPDATE_DEFENCE_NUMBER"; payload: { id: number } };
+
+
+
+function nextDie(dieIndex: AllowedDieValues) {
+    // Given a dieIndex e.g. 6, get the next higher die and return its index
+    const nextDieMap: Record<number, number> = {
+        4: 6,
+        6: 8,
+        8: 12,
+        12: 20,
+        20: 20,
+    };
+
+    return nextDieMap[dieIndex];
+}
 
 function reducer(state: Ship[], action: Action) {
     switch (action.type) {
@@ -59,21 +80,19 @@ function reducer(state: Ship[], action: Action) {
             );
         case "UPDATE_LIFE_POINTS":
             return state.map((ship) =>
-                ship.id === action.payload.id
-                    ? { ...ship, lifePoints: ship.lifePoints + action.payload.change }
-                    : ship
+                ship.id === action.payload.id ? { ...ship, lifePoints: ship.lifePoints + action.payload.change } : ship
             );
         case "UPDATE_CREDITS":
             return state.map((ship) =>
-                ship.id === action.payload.id
-                    ? { ...ship, credits: ship.credits + action.payload.change }
-                    : ship
+                ship.id === action.payload.id ? { ...ship, credits: ship.credits + action.payload.change } : ship
             );
         case "UPDATE_BOUNTIES":
             return state.map((ship) =>
-                ship.id === action.payload.id
-                    ? { ...ship, bounties: ship.bounties + action.payload.change }
-                    : ship
+                ship.id === action.payload.id ? { ...ship, bounties: ship.bounties + action.payload.change } : ship
+            );
+        case "UPDATE_ATTACK_DIE":
+            return state.map((ship) =>
+                ship.id === action.payload.id ? { ...ship, attackType: nextDie(ship.attackDie) } : ship
             );
         default:
             return state;
@@ -81,7 +100,8 @@ function reducer(state: Ship[], action: Action) {
 }
 
 export const useShips = (): UseShips => {
-    const [ships, dispatch] = useReducer(reducer, []);
+    // const [ships, dispatch] = useReducer(reducer, [] as Ship[]);
+    const [ships, dispatch] = useReducer(reducer as Reducer<Ship[], Action>, []);
 
     const addShip = (ship: Ship) => dispatch({ type: "ADD_SHIP", payload: { ship } });
 
@@ -99,5 +119,16 @@ export const useShips = (): UseShips => {
     const adjustShipBounties = (id: number, change: number) =>
         dispatch({ type: "UPDATE_BOUNTIES", payload: { id, change } });
 
-    return { ships, addShip, removeShip, adjustShipMovementRate, adjustShipLifePoints , adjustShipCredits, adjustShipBounties};
+    const adjustShipAttackDie = (id: number) => dispatch({ type: "UPDATE_ATTACK_DIE", payload: { id } });
+
+    return {
+        ships,
+        addShip,
+        removeShip,
+        adjustShipMovementRate,
+        adjustShipLifePoints,
+        adjustShipCredits,
+        adjustShipBounties,
+        adjustShipAttackDie,
+    };
 };
