@@ -104,7 +104,7 @@ const ShipDashboard = ({ ship, shipManager }: Props) => {
             <Stack textAlign="left">
                 <Text fontSize={headingSize}>On Kill</Text>
                 <Text fontSize="large">
-                    {ship.baseRewardFamePoints}FP + {ship.bounties} bounites
+                    {ship.baseRewardFamePoints}FP + {ship.bounties} Bounties
                 </Text>
                 <HStack>
                     <Group attached>

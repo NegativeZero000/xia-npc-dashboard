@@ -10,7 +10,15 @@ interface Props {
 }
 
 const UpgradeDrawer = ({ shipManager }: Props) => {
-    const { ships, adjustShipMovementRate, adjustShipAttackDie, adjustShipDefenceDie } = shipManager;
+    const {
+        ships,
+        adjustShipMovementRate,
+        increaseShipAttackDie,
+        increaseShipDefenceDie,
+        increaseShipNumberOfAttackDice,
+        increaseShipNumberOfDefenceDice,
+        increaseShipNumberOfActivationChips,
+    } = shipManager;
     const shipsToUpgrade: { id: number; dieRollStart: number; dieRollEnd: number; npc: string }[] = [
         { id: 0, dieRollStart: 1, dieRollEnd: 4, npc: "All NPCs" },
     ];
@@ -61,19 +69,19 @@ const UpgradeDrawer = ({ shipManager }: Props) => {
     const handleUpgradeButtonClick = () => {
         // Check to be sure this is a valid upgrade
         // Merchant has no attack abilities. Ensure that Merchant w/ either of those upgrades were not selected
-        const merchantShip = shipsToUpgrade.find((ship) => ship.npc === "Merchant");
+        const shipToUpgrade = ships.find((ship) => ship.id === selectedShipUpgradeRow)
+
         if (
-            merchantShip &&
-            selectedShipUpgradeRow === merchantShip.id &&
+            shipToUpgrade &&
+            shipToUpgrade.name === "Merchant" &&
             (selectedUpgradeRow === 3 || selectedUpgradeRow === 4)
         ) {
-            setErrorMessage("You cannot use this upgrade for the merchant ship. Select another");
+            setErrorMessage("You cannot use this upgrade for the Merchant ship. Select another");
             setShowErrorAlert(true);
             return;
         }
 
         // Upgrade each selected ship where possible
-
         switch (selectedUpgradeRow) {
             case 1:
                 if (selectedShipUpgradeRow === 0) {
@@ -81,6 +89,7 @@ const UpgradeDrawer = ({ shipManager }: Props) => {
                         adjustShipMovementRate(ship.id, 6);
                     });
                 } else {
+                    if(shipToUpgrade) adjustShipMovementRate(shipToUpgrade.id, 6);
                 }
                 break;
             case 2:
@@ -89,30 +98,64 @@ const UpgradeDrawer = ({ shipManager }: Props) => {
                         adjustShipMovementRate(ship.id, 3);
                     });
                 } else {
+                    if(shipToUpgrade) adjustShipMovementRate(shipToUpgrade.id, 3);
                 }
                 break;
             case 3:
+                if (selectedShipUpgradeRow === 0) {
+                    ships.forEach((ship) => {
+                        if (ship.attackDie != 0 && ship.numberOfAttackDice === 1) increaseShipNumberOfAttackDice(ship.id);
+                    });
+                } else {
+                    if(shipToUpgrade && shipToUpgrade.attackDie != 0 && shipToUpgrade.numberOfAttackDice === 1){
+                        increaseShipNumberOfAttackDice(shipToUpgrade.id);
+                    }
+                }
                 break;
             case 4:
                 if (selectedShipUpgradeRow === 0) {
                     ships.forEach((ship) => {
-                        if (ship.attackDie != 0) adjustShipAttackDie(ship.id);
+                        if (ship.attackDie != 0) increaseShipAttackDie(ship.id);
                     });
                 } else {
+                    if(shipToUpgrade && shipToUpgrade.attackDie != 0){
+                        increaseShipAttackDie(shipToUpgrade.id);
+                    }
                 }
 
                 break;
             case 5:
+                if (selectedShipUpgradeRow === 0) {
+                    ships.forEach((ship) => {
+                        if (ship.defenceDie != 0) increaseShipNumberOfDefenceDice(ship.id);
+                    });
+                } else {
+                    if(shipToUpgrade && shipToUpgrade.defenceDie != 0){
+                        increaseShipNumberOfDefenceDice(shipToUpgrade.id);
+                    }
+                }
                 break;
             case 6:
                 if (selectedShipUpgradeRow === 0) {
                     ships.forEach((ship) => {
-                        if (ship.defenceDie != 0) adjustShipDefenceDie(ship.id);
+                        if (ship.defenceDie != 0) increaseShipDefenceDie(ship.id);
                     });
                 } else {
+                    if(shipToUpgrade && shipToUpgrade.defenceDie != 0){
+                        increaseShipDefenceDie(shipToUpgrade.id);
+                    }
                 }
                 break;
             case 7:
+                if (selectedShipUpgradeRow === 0) {
+                    ships.forEach((ship) => {
+                        if (ship.numberOfActivationChips != 0) increaseShipNumberOfActivationChips(ship.id);
+                    });
+                } else {
+                    if(shipToUpgrade){
+                        increaseShipNumberOfActivationChips(shipToUpgrade.id);
+                    }
+                }
                 break;
         }
 

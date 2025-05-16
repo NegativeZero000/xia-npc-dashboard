@@ -8,8 +8,11 @@ export interface UseShips {
     adjustShipLifePoints: (id: number, change: number) => void;
     adjustShipCredits: (id: number, change: number) => void;
     adjustShipBounties: (id: number, change: number) => void;
-    adjustShipAttackDie: (id: number) => void;
-    adjustShipDefenceDie: (id: number) => void;
+    increaseShipAttackDie: (id: number) => void;
+    increaseShipDefenceDie: (id: number) => void;
+    increaseShipNumberOfAttackDice: (id: number) => void;
+    increaseShipNumberOfDefenceDice: (id: number) => void;
+    increaseShipNumberOfActivationChips: (id: number) => void;
 }
 
 const allowedValues = [0, 4, 6, 8, 12, 20] as const;
@@ -48,9 +51,10 @@ type Action =
     | { type: "UPDATE_CREDITS"; payload: { id: number; change: number } }
     | { type: "UPDATE_BOUNTIES"; payload: { id: number; change: number } }
     | { type: "UPDATE_ATTACK_DIE"; payload: { id: number } }
-    | { type: "UPDATE_ATTACK_NUMBER"; payload: { id: number } }
+    | { type: "UPDATE_ATTACK_NUMBER_OF_DICE"; payload: { id: number } }
     | { type: "UPDATE_DEFENCE_DIE"; payload: { id: number } }
-    | { type: "UPDATE_DEFENCE_NUMBER"; payload: { id: number } };
+    | { type: "UPDATE_DEFENCE_NUMBER_OF_DICE"; payload: { id: number } }
+    | { type: "UPDATE_ACTIVATION_NUMBER_OF_CHIPS"; payload: { id: number } };
 
 function nextDie(dieIndex: AllowedDieValues) {
     // Given a dieIndex e.g. 6, get the next higher die and return its index
@@ -80,23 +84,43 @@ function reducer(state: Ship[], action: Action) {
             );
         case "UPDATE_LIFE_POINTS":
             return state.map((ship) =>
-                ship.id === action.payload.id ? { ...ship, lifePoints: ship.lifePoints + action.payload.change } : ship
+                ship.id === action.payload.id
+                    ? { ...ship, lifePoints: Math.max(0, ship.lifePoints + action.payload.change) }
+                    : ship
             );
         case "UPDATE_CREDITS":
             return state.map((ship) =>
-                ship.id === action.payload.id ? { ...ship, credits: ship.credits + action.payload.change } : ship
+                ship.id === action.payload.id
+                    ? { ...ship, credits: Math.max(0, ship.credits + action.payload.change) }
+                    : ship
             );
         case "UPDATE_BOUNTIES":
             return state.map((ship) =>
-                ship.id === action.payload.id ? { ...ship, bounties: ship.bounties + action.payload.change } : ship
+                ship.id === action.payload.id
+                    ? { ...ship, bounties: Math.max(0, ship.bounties + action.payload.change) }
+                    : ship
             );
         case "UPDATE_ATTACK_DIE":
             return state.map((ship) =>
                 ship.id === action.payload.id ? { ...ship, attackDie: nextDie(ship.attackDie) } : ship
             );
+        case "UPDATE_ATTACK_NUMBER_OF_DICE":
+            return state.map((ship) =>
+                ship.id === action.payload.id ? { ...ship, numberOfAttackDice: ship.numberOfAttackDice + 1 } : ship
+            );
         case "UPDATE_DEFENCE_DIE":
             return state.map((ship) =>
                 ship.id === action.payload.id ? { ...ship, defenceDie: nextDie(ship.defenceDie) } : ship
+            );
+        case "UPDATE_DEFENCE_NUMBER_OF_DICE":
+            return state.map((ship) =>
+                ship.id === action.payload.id ? { ...ship, numberOfDefenceDice: ship.numberOfDefenceDice + 1 } : ship
+            );
+        case "UPDATE_ACTIVATION_NUMBER_OF_CHIPS":
+            return state.map((ship) =>
+                ship.id === action.payload.id
+                    ? { ...ship, numberOfActivationChips: ship.numberOfActivationChips + 1 }
+                    : ship
             );
         default:
             return state;
@@ -123,9 +147,18 @@ export const useShips = (): UseShips => {
     const adjustShipBounties = (id: number, change: number) =>
         dispatch({ type: "UPDATE_BOUNTIES", payload: { id, change } });
 
-    const adjustShipAttackDie = (id: number) => dispatch({ type: "UPDATE_ATTACK_DIE", payload: { id } });
-    const adjustShipDefenceDie = (id: number) => dispatch({ type: "UPDATE_DEFENCE_DIE", payload: { id } });
+    const increaseShipAttackDie = (id: number) => dispatch({ type: "UPDATE_ATTACK_DIE", payload: { id } });
 
+    const increaseShipNumberOfAttackDice = (id: number) =>
+        dispatch({ type: "UPDATE_ATTACK_NUMBER_OF_DICE", payload: { id } });
+
+    const increaseShipDefenceDie = (id: number) => dispatch({ type: "UPDATE_DEFENCE_DIE", payload: { id } });
+
+    const increaseShipNumberOfDefenceDice = (id: number) =>
+        dispatch({ type: "UPDATE_DEFENCE_NUMBER_OF_DICE", payload: { id } });
+
+    const increaseShipNumberOfActivationChips = (id: number) =>
+        dispatch({ type: "UPDATE_ACTIVATION_NUMBER_OF_CHIPS", payload: { id } });
     return {
         ships,
         addShip,
@@ -134,7 +167,10 @@ export const useShips = (): UseShips => {
         adjustShipLifePoints,
         adjustShipCredits,
         adjustShipBounties,
-        adjustShipAttackDie,
-        adjustShipDefenceDie
+        increaseShipAttackDie,
+        increaseShipDefenceDie,
+        increaseShipNumberOfAttackDice,
+        increaseShipNumberOfDefenceDice,
+        increaseShipNumberOfActivationChips,
     };
 };
