@@ -81,33 +81,45 @@ const UpgradeDrawer = ({ shipManager }: Props) => {
 
         // Upgrade each selected ship where possible
         switch (selectedUpgradeRow) {
-            case 1:
+            case 1: case 2:
+                // First upgrade row is strong change to movement rate
+                const increaseFactor: number = selectedUpgradeRow === 1 ? 6 : 3;
                 if (selectedShipUpgradeRow === 0) {
                     ships.forEach((ship) => {
-                        adjustShipMovementRate(ship.id, 6);
+                        adjustShipMovementRate(ship.id, increaseFactor);
+                        toaster.create({
+                            title: `${ship.name}'s movement was increased by ${increaseFactor} `,
+                            type: "success",
+                        });
                     });
                 } else {
-                    if (shipToUpgrade) adjustShipMovementRate(shipToUpgrade.id, 6);
-                }
-                break;
-            case 2:
-                if (selectedShipUpgradeRow === 0) {
-                    ships.forEach((ship) => {
-                        adjustShipMovementRate(ship.id, 3);
-                    });
-                } else {
-                    if (shipToUpgrade) adjustShipMovementRate(shipToUpgrade.id, 3);
+                    if (shipToUpgrade) {
+                        adjustShipMovementRate(shipToUpgrade.id, increaseFactor);
+                        toaster.create({
+                            title: `${shipToUpgrade.name}'s movement was increased by ${increaseFactor} `,
+                            type: "success",
+                        });
+                    }
                 }
                 break;
             case 3:
                 if (selectedShipUpgradeRow === 0) {
                     ships.forEach((ship) => {
-                        if (ship.attackDie != 0 && ship.numberOfAttackDice === 1)
+                        if (ship.attackDie != 0 && ship.numberOfAttackDice === 1) {
                             increaseShipNumberOfAttackDice(ship.id);
+                            toaster.create({
+                                title: `${ship.name}'s number of attack dice is now two`,
+                                type: "success",
+                            });
+                        }
                     });
                 } else {
                     if (shipToUpgrade && shipToUpgrade.attackDie != 0 && shipToUpgrade.numberOfAttackDice === 1) {
                         increaseShipNumberOfAttackDice(shipToUpgrade.id);
+                        toaster.create({
+                            title: `${shipToUpgrade.name}'s number of attack dice is now two`,
+                            type: "success",
+                        });
                     }
                 }
                 break;
@@ -115,10 +127,18 @@ const UpgradeDrawer = ({ shipManager }: Props) => {
                 if (selectedShipUpgradeRow === 0) {
                     ships.forEach((ship) => {
                         if (ship.attackDie != 0) increaseShipAttackDie(ship.id);
+                        toaster.create({
+                            title: `${ship.name}'s attack die type up one level`,
+                            type: "success",
+                        });
                     });
                 } else {
                     if (shipToUpgrade && shipToUpgrade.attackDie != 0) {
                         increaseShipAttackDie(shipToUpgrade.id);
+                        toaster.create({
+                            title: `${shipToUpgrade.name}'s attack die type up one level`,
+                            type: "success",
+                        });
                     }
                 }
 
@@ -127,21 +147,37 @@ const UpgradeDrawer = ({ shipManager }: Props) => {
                 if (selectedShipUpgradeRow === 0) {
                     ships.forEach((ship) => {
                         if (ship.defenceDie != 0) increaseShipNumberOfDefenceDice(ship.id);
+                        toaster.create({
+                            title: `${ship.name}'s number of defence dice has increased by 1`,
+                            type: "success",
+                        });
                     });
                 } else {
                     if (shipToUpgrade && shipToUpgrade.defenceDie != 0) {
                         increaseShipNumberOfDefenceDice(shipToUpgrade.id);
+                        toaster.create({
+                            title: `${shipToUpgrade.name}'s number of defence dice has increased by 1`,
+                            type: "success",
+                        });
                     }
                 }
                 break;
             case 6:
                 if (selectedShipUpgradeRow === 0) {
                     ships.forEach((ship) => {
-                        if (ship.defenceDie != 0) increaseShipDefenceDie(ship.id);
+                        if (ship.defenceDie != 0 && ship.defenceDie != 20) increaseShipDefenceDie(ship.id);
+                        toaster.create({
+                            title: `${ship.name}'s defence die type up one level`,
+                            type: "success",
+                        });
                     });
                 } else {
-                    if (shipToUpgrade && shipToUpgrade.defenceDie != 0) {
+                    if (shipToUpgrade && shipToUpgrade.defenceDie != 0 && shipToUpgrade.defenceDie != 20) {
                         increaseShipDefenceDie(shipToUpgrade.id);
+                        toaster.create({
+                            title: `${shipToUpgrade.name}'s defence die type up one level`,
+                            type: "success",
+                        });
                     }
                 }
                 break;
@@ -149,10 +185,20 @@ const UpgradeDrawer = ({ shipManager }: Props) => {
                 if (selectedShipUpgradeRow === 0) {
                     ships.forEach((ship) => {
                         if (ship.numberOfActivationChips != 0) increaseShipNumberOfActivationChips(ship.id);
+                        toaster.create({
+                            title: `Add another activation chip for ${ship.name} into its vessel`,
+                            type: "warning",
+                            duration: 4000,
+                        });
                     });
                 } else {
                     if (shipToUpgrade) {
                         increaseShipNumberOfActivationChips(shipToUpgrade.id);
+                        toaster.create({
+                            title: `Add another activation chip for ${shipToUpgrade.name} into its vessel`,
+                            type: "warning",
+                            duration: 4000,
+                        });
                     }
                 }
                 break;
