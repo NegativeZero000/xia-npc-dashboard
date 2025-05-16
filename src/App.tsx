@@ -7,12 +7,13 @@ import NavBar from "./components/NavBar";
 import Footer from "./components/Footer";
 import ShipDashboard from "./components/ShipDashboard";
 import UpgradeDrawer from "./components/UpgradeDrawer";
+import { toaster, Toaster } from "./components/ui/toaster";
 
 function App() {
     const shipManager = useShips();
-    const { ships, addShip } = shipManager
+    const { ships, addShip } = shipManager;
     const npcShips = rawShips as Ship[];
-    
+
     // Import the ships from data
     const devInitialized = useRef(false);
     useEffect(() => {
@@ -27,6 +28,7 @@ function App() {
 
     return (
         <>
+            <Toaster />
             <Grid
                 templateAreas={{
                     base: `"navigation" "main" "footer"`,
@@ -37,12 +39,12 @@ function App() {
             >
                 <GridItem area="navigation" padding={2}>
                     <NavBar />
-                    <UpgradeDrawer shipManager={shipManager}/>
+                    <UpgradeDrawer shipManager={shipManager} />
                 </GridItem>
                 <GridItem area="main" padding={2}>
                     <Box>
                         {ships.map((ship) => (
-                            <ShipDashboard key={ship.id} ship={ship} shipManager={shipManager}/>
+                            <ShipDashboard key={ship.id} ship={ship} shipManager={shipManager} />
                         ))}
                     </Box>
                 </GridItem>
