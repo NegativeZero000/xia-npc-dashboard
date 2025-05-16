@@ -9,6 +9,7 @@ export interface UseShips {
     adjustShipCredits: (id: number, change: number) => void;
     adjustShipBounties: (id: number, change: number) => void;
     adjustShipAttackDie: (id: number) => void;
+    adjustShipDefenceDie: (id: number) => void;
 }
 
 const allowedValues = [0, 4, 6, 8, 12, 20] as const;
@@ -93,6 +94,10 @@ function reducer(state: Ship[], action: Action) {
             return state.map((ship) =>
                 ship.id === action.payload.id ? { ...ship, attackDie: nextDie(ship.attackDie) } : ship
             );
+        case "UPDATE_DEFENCE_DIE":
+            return state.map((ship) =>
+                ship.id === action.payload.id ? { ...ship, defenceDie: nextDie(ship.defenceDie) } : ship
+            );
         default:
             return state;
     }
@@ -119,6 +124,7 @@ export const useShips = (): UseShips => {
         dispatch({ type: "UPDATE_BOUNTIES", payload: { id, change } });
 
     const adjustShipAttackDie = (id: number) => dispatch({ type: "UPDATE_ATTACK_DIE", payload: { id } });
+    const adjustShipDefenceDie = (id: number) => dispatch({ type: "UPDATE_DEFENCE_DIE", payload: { id } });
 
     return {
         ships,
@@ -129,5 +135,6 @@ export const useShips = (): UseShips => {
         adjustShipCredits,
         adjustShipBounties,
         adjustShipAttackDie,
+        adjustShipDefenceDie
     };
 };

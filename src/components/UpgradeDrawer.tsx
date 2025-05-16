@@ -10,7 +10,7 @@ interface Props {
 }
 
 const UpgradeDrawer = ({ shipManager }: Props) => {
-    const { ships, adjustShipMovementRate, adjustShipAttackDie } = shipManager;
+    const { ships, adjustShipMovementRate, adjustShipAttackDie, adjustShipDefenceDie } = shipManager;
     const shipsToUpgrade: { id: number; dieRollStart: number; dieRollEnd: number; npc: string }[] = [
         { id: 0, dieRollStart: 1, dieRollEnd: 4, npc: "All NPCs" },
     ];
@@ -73,52 +73,47 @@ const UpgradeDrawer = ({ shipManager }: Props) => {
         }
 
         // Upgrade each selected ship where possible
-        if (selectedShipUpgradeRow === 0) {
-            // This needs to upgrade each ship
-            switch (selectedUpgradeRow) {
-                case 1:
+
+        switch (selectedUpgradeRow) {
+            case 1:
+                if (selectedShipUpgradeRow === 0) {
                     ships.forEach((ship) => {
                         adjustShipMovementRate(ship.id, 6);
                     });
-                    break;
-                case 2:
+                } else {
+                }
+                break;
+            case 2:
+                if (selectedShipUpgradeRow === 0) {
                     ships.forEach((ship) => {
                         adjustShipMovementRate(ship.id, 3);
                     });
-                    break;
-                case 3:
-                    break;
-                case 4:
+                } else {
+                }
+                break;
+            case 3:
+                break;
+            case 4:
+                if (selectedShipUpgradeRow === 0) {
                     ships.forEach((ship) => {
                         if (ship.attackDie != 0) adjustShipAttackDie(ship.id);
                     });
+                } else {
+                }
 
-                    break;
-                case 5:
-                    break;
-                case 6:
-                    break;
-                case 7:
-                    break;
-            }
-        } else {
-            // This needs to upgrade the single selected ship
-            switch (selectedUpgradeRow) {
-                case 1:
-                    break;
-                case 2:
-                    break;
-                case 3:
-                    break;
-                case 4:
-                    break;
-                case 5:
-                    break;
-                case 6:
-                    break;
-                case 7:
-                    break;
-            }
+                break;
+            case 5:
+                break;
+            case 6:
+                if (selectedShipUpgradeRow === 0) {
+                    ships.forEach((ship) => {
+                        if (ship.defenceDie != 0) adjustShipDefenceDie(ship.id);
+                    });
+                } else {
+                }
+                break;
+            case 7:
+                break;
         }
 
         // Perform the upgrade
