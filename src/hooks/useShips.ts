@@ -11,7 +11,7 @@ export interface UseShips {
     adjustShipAttackDie: (id: number) => void;
 }
 
-const allowedValues = [4, 6, 8, 12, 20] as const;
+const allowedValues = [0, 4, 6, 8, 12, 20] as const;
 type AllowedDieValues = (typeof allowedValues)[number];
 
 export type Ship = {
@@ -51,11 +51,10 @@ type Action =
     | { type: "UPDATE_DEFENCE_DIE"; payload: { id: number } }
     | { type: "UPDATE_DEFENCE_NUMBER"; payload: { id: number } };
 
-
-
 function nextDie(dieIndex: AllowedDieValues) {
     // Given a dieIndex e.g. 6, get the next higher die and return its index
     const nextDieMap: Record<number, number> = {
+        0: 0,
         4: 6,
         6: 8,
         8: 12,
@@ -92,7 +91,7 @@ function reducer(state: Ship[], action: Action) {
             );
         case "UPDATE_ATTACK_DIE":
             return state.map((ship) =>
-                ship.id === action.payload.id ? { ...ship, attackType: nextDie(ship.attackDie) } : ship
+                ship.id === action.payload.id ? { ...ship, attackDie: nextDie(ship.attackDie) } : ship
             );
         default:
             return state;

@@ -10,7 +10,7 @@ interface Props {
 }
 
 const UpgradeDrawer = ({ shipManager }: Props) => {
-    const { ships, adjustShipMovementRate } = shipManager;
+    const { ships, adjustShipMovementRate, adjustShipAttackDie } = shipManager;
     const shipsToUpgrade: { id: number; dieRollStart: number; dieRollEnd: number; npc: string }[] = [
         { id: 0, dieRollStart: 1, dieRollEnd: 4, npc: "All NPCs" },
     ];
@@ -78,33 +78,31 @@ const UpgradeDrawer = ({ shipManager }: Props) => {
             switch (selectedUpgradeRow) {
                 case 1:
                     ships.forEach((ship) => {
-                        adjustShipMovementRate(ship.id, 6)
+                        adjustShipMovementRate(ship.id, 6);
                     });
                     break;
                 case 2:
                     ships.forEach((ship) => {
-                        adjustShipMovementRate(ship.id, 3)
+                        adjustShipMovementRate(ship.id, 3);
                     });
                     break;
                 case 3:
-
                     break;
                 case 4:
+                    ships.forEach((ship) => {
+                        if (ship.attackDie != 0) adjustShipAttackDie(ship.id);
+                    });
 
                     break;
                 case 5:
-
                     break;
                 case 6:
-
                     break;
                 case 7:
-
                     break;
             }
         } else {
             // This needs to upgrade the single selected ship
-
             switch (selectedUpgradeRow) {
                 case 1:
                     break;
