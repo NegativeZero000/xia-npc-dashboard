@@ -7,7 +7,8 @@ import NavBar from "./components/NavBar";
 import Footer from "./components/Footer";
 import ShipDashboard from "./components/ShipDashboard";
 import UpgradeDrawer from "./components/UpgradeDrawer";
-import { toaster, Toaster } from "./components/ui/toaster";
+import { Toaster } from "./components/ui/toaster";
+import ShipDisplay from "./components/ShipDisplay";
 
 function App() {
     const shipManager = useShips();
@@ -44,7 +45,7 @@ function App() {
                 <GridItem area="main" padding={2}>
                     <Box>
                         {ships.map((ship) => (
-                            <ShipDashboard key={ship.id} ship={ship} shipManager={shipManager} />
+                            <ShipDisplay key={ship.id} ship={ship} shipManager={shipManager} />
                         ))}
                     </Box>
                 </GridItem>

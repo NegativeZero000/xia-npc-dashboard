@@ -4,6 +4,7 @@ export interface UseShips {
     ships: Ship[];
     addShip: (ship: Ship) => void;
     removeShip: (id: number) => void;
+    resetShip: (id: number, ship: Ship) => void;
     adjustShipMovementRate: (id: number, change: number) => void;
     adjustShipLifePoints: (id: number, change: number) => void;
     adjustShipCredits: (id: number, change: number) => void;
@@ -22,6 +23,7 @@ export type Ship = {
     id: number;
     name: string;
     spawn: string;
+    imagePath: string;
     movementRate: number;
     altenateMovementRate: number;
     altenateMovementCondition: string;
@@ -46,6 +48,7 @@ export type Ship = {
 type Action =
     | { type: "ADD_SHIP"; payload: { ship: Ship } }
     | { type: "REMOVE_SHIP"; payload: { id: number } }
+    | { type: "RESET_SHIP"; payload: { id: number,  ship: Ship } }
     | { type: "UPDATE_MOVEMENT_RATE"; payload: { id: number; change: number } }
     | { type: "UPDATE_LIFE_POINTS"; payload: { id: number; change: number } }
     | { type: "UPDATE_CREDITS"; payload: { id: number; change: number } }
@@ -76,6 +79,12 @@ function reducer(state: Ship[], action: Action) {
             return [...state, { ...action.payload.ship }];
         case "REMOVE_SHIP":
             return state.filter((ship) => ship.id !== action.payload.id);
+        case "RESET_SHIP":
+            return state.map((ship) =>
+                ship.id === action.payload.id
+                    ? { ...action.payload.ship }
+                    : ship
+            );
         case "UPDATE_MOVEMENT_RATE":
             return state.map((ship) =>
                 ship.id === action.payload.id
@@ -135,6 +144,8 @@ export const useShips = (): UseShips => {
 
     const removeShip = (id: number) => dispatch({ type: "REMOVE_SHIP", payload: { id } });
 
+    const resetShip = (id: number, ship: Ship) => dispatch({ type: "RESET_SHIP", payload: { id, ship } });
+
     const adjustShipMovementRate = (id: number, change: number) =>
         dispatch({ type: "UPDATE_MOVEMENT_RATE", payload: { id, change } });
 
@@ -163,6 +174,7 @@ export const useShips = (): UseShips => {
         ships,
         addShip,
         removeShip,
+        resetShip,
         adjustShipMovementRate,
         adjustShipLifePoints,
         adjustShipCredits,

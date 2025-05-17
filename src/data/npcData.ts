@@ -2,6 +2,7 @@ export default [
     {
         id: 1,
         name: "Enforcer",
+        imagePath: "/enforcer_ship.png",
         spawn: "First Lawful Planet",
         movementRate: 6,
         altenateMovementRate: 0,
@@ -26,6 +27,7 @@ export default [
     {
         id: 2,
         name: "Merchant",
+                imagePath: "/merchant_ship.png",
         spawn: "First Neutral Planet",
         movementRate: 8,
         altenateMovementRate: 0,
@@ -50,6 +52,7 @@ export default [
     {
         id: 3,
         name: "Scoundrel",
+                imagePath: "/scoundrel_ship.png",
         spawn: "First Outlaw Planet",
         movementRate: 5,
         altenateMovementRate: 5,
@@ -75,6 +78,7 @@ export default [
     {
         id: 4,
         name: "Sellsword",
+                imagePath: "/sellsword_ship.png",
         spawn: "Second Outlaw Planet",
         movementRate: 7,
         altenateMovementRate: 0,
