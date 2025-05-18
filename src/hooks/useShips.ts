@@ -1,11 +1,12 @@
 import { useReducer, type Reducer } from "react";
-import rawShips from "../data/npcData"
+import rawShips from "../data/npcData";
 
 export interface UseShips {
     ships: Ship[];
     addShip: (ship: Ship) => void;
     removeShip: (id: number) => void;
     resetShip: (id: number) => void;
+    resetAllShips: () => void;
     adjustShipMovementRate: (id: number, change: number) => void;
     adjustShipLifePoints: (id: number, change: number) => void;
     adjustShipCredits: (id: number, change: number) => void;
@@ -20,6 +21,20 @@ export interface UseShips {
 const npcShips = rawShips as Ship[];
 const allowedValues = [0, 4, 6, 8, 12, 20] as const;
 type AllowedDieValues = (typeof allowedValues)[number];
+
+function nextDie(dieIndex: AllowedDieValues) {
+    // Given a dieIndex e.g. 6, get the next higher die and return its index
+    const nextDieMap: Record<number, number> = {
+        0: 0,
+        4: 6,
+        6: 8,
+        8: 12,
+        12: 20,
+        20: 20,
+    };
+
+    return nextDieMap[dieIndex];
+}
 
 export type Ship = {
     id: number;
@@ -50,7 +65,7 @@ export type Ship = {
 type Action =
     | { type: "ADD_SHIP"; payload: { ship: Ship } }
     | { type: "REMOVE_SHIP"; payload: { id: number } }
-    | { type: "RESET_SHIP"; payload: { id: number} }
+    | { type: "RESET_SHIP"; payload: { id: number } }
     | { type: "UPDATE_MOVEMENT_RATE"; payload: { id: number; change: number } }
     | { type: "UPDATE_LIFE_POINTS"; payload: { id: number; change: number } }
     | { type: "UPDATE_CREDITS"; payload: { id: number; change: number } }
@@ -59,21 +74,8 @@ type Action =
     | { type: "UPDATE_ATTACK_NUMBER_OF_DICE"; payload: { id: number } }
     | { type: "UPDATE_DEFENCE_DIE"; payload: { id: number } }
     | { type: "UPDATE_DEFENCE_NUMBER_OF_DICE"; payload: { id: number } }
-    | { type: "UPDATE_ACTIVATION_NUMBER_OF_CHIPS"; payload: { id: number } };
-
-function nextDie(dieIndex: AllowedDieValues) {
-    // Given a dieIndex e.g. 6, get the next higher die and return its index
-    const nextDieMap: Record<number, number> = {
-        0: 0,
-        4: 6,
-        6: 8,
-        8: 12,
-        12: 20,
-        20: 20,
-    };
-
-    return nextDieMap[dieIndex];
-}
+    | { type: "UPDATE_ACTIVATION_NUMBER_OF_CHIPS"; payload: { id: number } }
+    | { type: "RESET_ALL_SHIPS"; payload: {} };
 
 function reducer(state: Ship[], action: Action) {
     switch (action.type) {
@@ -83,10 +85,10 @@ function reducer(state: Ship[], action: Action) {
             return state.filter((ship) => ship.id !== action.payload.id);
         case "RESET_SHIP":
             return state.map((ship) =>
-                ship.id === action.payload.id
-                    ? { ...npcShips.find((ship) => ship.id === action.payload.id) }
-                    : ship
+                ship.id === action.payload.id ? { ...npcShips.find((ship) => ship.id === action.payload.id) } : ship
             );
+        case "RESET_ALL_SHIPS":
+            return [...npcShips];
         case "UPDATE_MOVEMENT_RATE":
             return state.map((ship) =>
                 ship.id === action.payload.id
@@ -148,6 +150,8 @@ export const useShips = (): UseShips => {
 
     const resetShip = (id: number) => dispatch({ type: "RESET_SHIP", payload: { id } });
 
+    const resetAllShips = () => dispatch({ type: "RESET_ALL_SHIPS", payload: {} });
+
     const adjustShipMovementRate = (id: number, change: number) =>
         dispatch({ type: "UPDATE_MOVEMENT_RATE", payload: { id, change } });
 
@@ -172,11 +176,13 @@ export const useShips = (): UseShips => {
 
     const increaseShipNumberOfActivationChips = (id: number) =>
         dispatch({ type: "UPDATE_ACTIVATION_NUMBER_OF_CHIPS", payload: { id } });
+
     return {
         ships,
         addShip,
         removeShip,
         resetShip,
+        resetAllShips,
         adjustShipMovementRate,
         adjustShipLifePoints,
         adjustShipCredits,
