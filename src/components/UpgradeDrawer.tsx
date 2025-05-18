@@ -111,6 +111,20 @@ const UpgradeDrawer = ({ shipManager }: Props) => {
                                 title: `${ship.name}'s number of attack dice is now two`,
                                 type: "success",
                             });
+                        } else {
+                            if (ship.numberOfAttackDice === 2){
+                                toaster.create({
+                                    title: `${ship.name}'s number of attack dice is already two. No change was made`,
+                                    type: "warning",
+                                });
+                                
+                            } else if (ship.attackDie != 0) {
+                                toaster.create({
+                                    title: `${ship.name}'s has no attack to upgrade. No change was made`,
+                                    type: "warning",
+                                });
+
+                            }
                         }
                     });
                 } else {
@@ -204,7 +218,6 @@ const UpgradeDrawer = ({ shipManager }: Props) => {
                 break;
         }
 
-        // Perform the upgrade
         // Clear the states and close the drawer
         handleCloseDrawer();
     };

@@ -1,11 +1,10 @@
 import { useEffect, useRef } from "react";
-import { Box, Grid, GridItem } from "@chakra-ui/react";
+import { Box, Grid, GridItem, Text } from "@chakra-ui/react";
 import "./App.css";
 import rawShips from "./data/npcData";
 import { useShips, type Ship } from "./hooks/useShips";
 import NavBar from "./components/NavBar";
 import Footer from "./components/Footer";
-import UpgradeDrawer from "./components/UpgradeDrawer";
 import { Toaster } from "./components/ui/toaster";
 import ShipDisplay from "./components/ShipDisplay";
 
@@ -38,8 +37,7 @@ function App() {
                 }}
             >
                 <GridItem area="navigation" padding={2}>
-                    <NavBar />
-                    <UpgradeDrawer shipManager={shipManager} />
+                    <NavBar shipManager={shipManager} />
                 </GridItem>
                 <GridItem area="main" padding={2}>
                     <Box>
@@ -51,6 +49,12 @@ function App() {
                 <GridItem area="footer" padding={2}>
                     <Box>
                         <Footer />
+                        <Text>
+                            Counter
+                            <Text as="sup" fontSize="xs" color="red.500" ml={1}>
+                                3
+                            </Text>
+                        </Text>
                     </Box>
                 </GridItem>
             </Grid>
