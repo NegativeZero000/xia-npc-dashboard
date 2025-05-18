@@ -49,12 +49,6 @@ function App() {
                 <GridItem area="footer" padding={2}>
                     <Box>
                         <Footer />
-                        <Text>
-                            Counter
-                            <Text as="sup" fontSize="xs" color="red.500" ml={1}>
-                                3
-                            </Text>
-                        </Text>
                     </Box>
                 </GridItem>
             </Grid>
