@@ -1,5 +1,5 @@
 import { useEffect, useRef } from "react";
-import { Box, Grid, GridItem, Text } from "@chakra-ui/react";
+import { Box, Grid, GridItem } from "@chakra-ui/react";
 import "./App.css";
 import rawShips from "./data/npcData";
 import { useShips, type Ship } from "./hooks/useShips";
