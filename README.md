@@ -52,3 +52,18 @@ export default tseslint.config({
   },
 })
 ```
+
+## Setting up SSH
+
+```
+Get-Service -Name ssh-agent | Set-Service -StartupType Manual
+Start-Service ssh-agent
+
+ssh -T git@github.com
+
+git remote add origin git@github.com:NegativeZero000/xia-npc-dashboard.git
+git branch -M main
+git push -u origin main
+
+git config --global core.sshCommand "'C:\Windows\System32\OpenSSH\ssh.exe'"
+```
