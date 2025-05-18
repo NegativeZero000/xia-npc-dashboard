@@ -1,11 +1,12 @@
 import { FaHeartBroken, FaMinus, FaPlus } from "react-icons/fa";
-import { Box, Button, Grid, GridItem, Group, HStack, Icon, Separator, Stack, Text } from "@chakra-ui/react";
+import { Box, Button, Grid, GridItem, Group, HStack, Icon, Separator, Show, Stack, Text } from "@chakra-ui/react";
 import { Credits, DiceIcon } from "./Icons";
 import type { Ship, UseShips } from "../hooks/useShips";
 import { ImHeart } from "react-icons/im";
 import { FiTarget } from "react-icons/fi";
 import { BsGeoAltFill } from "react-icons/bs";
 import { AlertDialog } from "./AlertDialog";
+import { InfoTip } from "./ui/toggle-tip";
 
 interface Props {
     ship: Ship;
@@ -46,7 +47,7 @@ const ShipDashboard = ({ ship, shipManager }: Props) => {
                     base: `
                         "hd  hd  hd  hd  hd  hd  hd  hd  hd  hd  hd"
                         "im  mv  ax  dx  lp  crd rwd tgt tgt tgt upg"
-                        "im   .   .   .  lpc cpc btc tgt tgt tgt upg"
+                        "im  .   .   .   lpc cpc btc tgt tgt tgt upg"
                     `,
                 }}
                 templateColumns={{
@@ -67,7 +68,16 @@ const ShipDashboard = ({ ship, shipManager }: Props) => {
                 <GridItem area="mv" padding={giPadding}>
                     <Stack textAlign="left">
                         <Text fontSize={headingSize}>Movement</Text>
-                        <Text fontSize="large"> {ship.movementRate}</Text>
+                        <HStack>
+                            <Text fontSize="large">
+                                {ship.altenateMovementRate
+                                    ? `${ship.movementRate} / ${ship.altenateMovementRate}`
+                                    : ship.movementRate}
+                            </Text>
+                            <Show when={ship.altenateMovementRate > 0}>
+                                <InfoTip content={ship.altenateMovementCondition} />
+                            </Show>
+                        </HStack>
                     </Stack>
                 </GridItem>
                 <GridItem area="ax" padding={giPadding}>
@@ -95,7 +105,7 @@ const ShipDashboard = ({ ship, shipManager }: Props) => {
                         <Text fontSize={headingSize}>Life Points</Text>
                         <HStack>
                             <Text fontSize="large"> {ship.lifePoints}</Text>
-                            <Icon as={ship.lifePoints > 0 ? ImHeart: FaHeartBroken } color="red.500" boxSize={5} />
+                            <Icon as={ship.lifePoints > 0 ? ImHeart : FaHeartBroken} color="red.500" boxSize={5} />
                         </HStack>
                     </Stack>
                 </GridItem>
@@ -207,7 +217,14 @@ const ShipDashboard = ({ ship, shipManager }: Props) => {
                     </Stack>
                 </GridItem>
                 <GridItem area="upg" padding={giPadding}>
-                <AlertDialog commitTitle="Factory Reset" commitBody={`Do you really want to reset the ${ship.name} back to it's defaults?`} commitButtonName="Reset" onCommit={() => resetShip(ship.id)}>Reset</AlertDialog>
+                    <AlertDialog
+                        commitTitle="Factory Reset"
+                        commitBody={`Do you really want to reset the ${ship.name} back to it's defaults?`}
+                        commitButtonName="Reset"
+                        onCommit={() => resetShip(ship.id)}
+                    >
+                        Reset
+                    </AlertDialog>
                 </GridItem>
             </Grid>
         </Box>

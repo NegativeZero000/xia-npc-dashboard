@@ -55,7 +55,7 @@ export default [
                 imagePath: "/scoundrel_ship.png",
         spawn: "First Outlaw Planet",
         movementRate: 5,
-        altenateMovementRate: 5,
+        altenateMovementRate: 8,
         altenateMovementCondition:
             "If Scoundrel ends movement adjacent to target ship and has a clear line of sight it attacks and moves towards [Loath]",
         attackType: "Blaster",
