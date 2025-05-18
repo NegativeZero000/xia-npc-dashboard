@@ -1,10 +1,11 @@
-import { FaMinus, FaPlus } from "react-icons/fa";
+import { FaHeartBroken, FaMinus, FaPlus } from "react-icons/fa";
 import { Box, Button, Grid, GridItem, Group, HStack, Icon, Separator, Stack, Text } from "@chakra-ui/react";
 import { Credits, DiceIcon } from "./Icons";
 import type { Ship, UseShips } from "../hooks/useShips";
 import { ImHeart } from "react-icons/im";
 import { FiTarget } from "react-icons/fi";
 import { BsGeoAltFill } from "react-icons/bs";
+import { AlertDialog } from "./AlertDialog";
 
 interface Props {
     ship: Ship;
@@ -12,10 +13,10 @@ interface Props {
 }
 
 const ShipDashboard = ({ ship, shipManager }: Props) => {
-    const { adjustShipLifePoints, adjustShipCredits, adjustShipBounties } = shipManager;
+    const { adjustShipLifePoints, adjustShipCredits, adjustShipBounties, resetShip } = shipManager;
 
     const headingSize = "xs";
-    const giPadding = 0
+    const giPadding = 1;
     return (
         <Box
             borderWidth="1px"
@@ -23,8 +24,9 @@ const ShipDashboard = ({ ship, shipManager }: Props) => {
             boxShadow="md"
             padding={4}
             borderColor="gray.600" // or "gray.50" for subtle contrast
-            maxW="70%"
+            maxW="75%"
             marginBottom={2}
+            marginLeft={4}
         >
             <Grid
                 // Template Areas
@@ -42,13 +44,13 @@ const ShipDashboard = ({ ship, shipManager }: Props) => {
 
                 templateAreas={{
                     base: `
-                        "hd  hd  hd  hd  hd  hd  hd  hd  hd  hd"
-                        "im  mv  ax  dx  lp  crd rwd tgt tgt tgt"
-                        "im   .   .   .  lpc cpc btc tgt tgt tgt"
+                        "hd  hd  hd  hd  hd  hd  hd  hd  hd  hd  hd"
+                        "im  mv  ax  dx  lp  crd rwd tgt tgt tgt upg"
+                        "im   .   .   .  lpc cpc btc tgt tgt tgt upg"
                     `,
                 }}
                 templateColumns={{
-                    base: "120px repeat(9, 1fr)",
+                    base: "120px repeat(10, 1fr)",
                 }}
             >
                 <GridItem area="hd" padding={giPadding}>
@@ -69,7 +71,7 @@ const ShipDashboard = ({ ship, shipManager }: Props) => {
                     </Stack>
                 </GridItem>
                 <GridItem area="ax" padding={giPadding}>
-                    <Stack textAlign="left" hidden={ship.numberOfAttackDice > 0 ? false: true}>
+                    <Stack textAlign="left" hidden={ship.numberOfAttackDice > 0 ? false : true}>
                         <Text fontSize={headingSize}>Attack</Text>
                         <HStack>
                             <Text fontSize="large">{ship.numberOfAttackDice} </Text>
@@ -93,7 +95,7 @@ const ShipDashboard = ({ ship, shipManager }: Props) => {
                         <Text fontSize={headingSize}>Life Points</Text>
                         <HStack>
                             <Text fontSize="large"> {ship.lifePoints}</Text>
-                            <Icon as={ImHeart} color="red.500" boxSize={5} />
+                            <Icon as={ship.lifePoints > 0 ? ImHeart: FaHeartBroken } color="red.500" boxSize={5} />
                         </HStack>
                     </Stack>
                 </GridItem>
@@ -194,15 +196,18 @@ const ShipDashboard = ({ ship, shipManager }: Props) => {
                 </GridItem>
                 <GridItem area="tgt" padding={giPadding}>
                     <Stack textAlign="left">
-                        <HStack hidden={ship.targetPreference ? false: true}>
+                        <HStack hidden={ship.targetPreference ? false : true}>
                             <Icon as={FiTarget} color="red.500" boxSize={5} />
                             <Text fontSize="initial">{ship.targetPreference}</Text>
                         </HStack>
                         <HStack>
-                            <Icon as={BsGeoAltFill} color="green.500" boxSize={5} />                       
+                            <Icon as={BsGeoAltFill} color="green.500" boxSize={5} />
                             <Text fontSize="initial">{ship.targetPath}</Text>
                         </HStack>
                     </Stack>
+                </GridItem>
+                <GridItem area="upg" padding={giPadding}>
+                <AlertDialog commitTitle="Factory Reset" commitBody={`Do you really want to reset the ${ship.name} back to it's defaults?`} commitButtonName="Reset" onCommit={() => resetShip(ship.id)}>Reset</AlertDialog>
                 </GridItem>
             </Grid>
         </Box>

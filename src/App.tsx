@@ -5,7 +5,6 @@ import rawShips from "./data/npcData";
 import { useShips, type Ship } from "./hooks/useShips";
 import NavBar from "./components/NavBar";
 import Footer from "./components/Footer";
-import ShipDashboard from "./components/ShipDashboard";
 import UpgradeDrawer from "./components/UpgradeDrawer";
 import { Toaster } from "./components/ui/toaster";
 import ShipDisplay from "./components/ShipDisplay";

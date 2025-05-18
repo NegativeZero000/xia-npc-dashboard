@@ -1,10 +1,11 @@
 import { useReducer, type Reducer } from "react";
+import rawShips from "../data/npcData"
 
 export interface UseShips {
     ships: Ship[];
     addShip: (ship: Ship) => void;
     removeShip: (id: number) => void;
-    resetShip: (id: number, ship: Ship) => void;
+    resetShip: (id: number) => void;
     adjustShipMovementRate: (id: number, change: number) => void;
     adjustShipLifePoints: (id: number, change: number) => void;
     adjustShipCredits: (id: number, change: number) => void;
@@ -16,6 +17,7 @@ export interface UseShips {
     increaseShipNumberOfActivationChips: (id: number) => void;
 }
 
+const npcShips = rawShips as Ship[];
 const allowedValues = [0, 4, 6, 8, 12, 20] as const;
 type AllowedDieValues = (typeof allowedValues)[number];
 
@@ -48,7 +50,7 @@ export type Ship = {
 type Action =
     | { type: "ADD_SHIP"; payload: { ship: Ship } }
     | { type: "REMOVE_SHIP"; payload: { id: number } }
-    | { type: "RESET_SHIP"; payload: { id: number,  ship: Ship } }
+    | { type: "RESET_SHIP"; payload: { id: number} }
     | { type: "UPDATE_MOVEMENT_RATE"; payload: { id: number; change: number } }
     | { type: "UPDATE_LIFE_POINTS"; payload: { id: number; change: number } }
     | { type: "UPDATE_CREDITS"; payload: { id: number; change: number } }
@@ -82,7 +84,7 @@ function reducer(state: Ship[], action: Action) {
         case "RESET_SHIP":
             return state.map((ship) =>
                 ship.id === action.payload.id
-                    ? { ...action.payload.ship }
+                    ? { ...npcShips.find((ship) => ship.id === action.payload.id) }
                     : ship
             );
         case "UPDATE_MOVEMENT_RATE":
@@ -144,7 +146,7 @@ export const useShips = (): UseShips => {
 
     const removeShip = (id: number) => dispatch({ type: "REMOVE_SHIP", payload: { id } });
 
-    const resetShip = (id: number, ship: Ship) => dispatch({ type: "RESET_SHIP", payload: { id, ship } });
+    const resetShip = (id: number) => dispatch({ type: "RESET_SHIP", payload: { id } });
 
     const adjustShipMovementRate = (id: number, change: number) =>
         dispatch({ type: "UPDATE_MOVEMENT_RATE", payload: { id, change } });
