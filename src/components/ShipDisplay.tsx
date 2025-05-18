@@ -1,6 +1,6 @@
 import { FaHeartBroken, FaMinus, FaPlus } from "react-icons/fa";
 import { Box, Button, Grid, GridItem, Group, HStack, Icon, Separator, Show, Stack, Text } from "@chakra-ui/react";
-import { Credits, DiceIcon } from "./Icons";
+import { Bounty, Credits, DiceIcon } from "./Icons";
 import type { Ship, UseShips } from "../hooks/useShips";
 import { ImHeart } from "react-icons/im";
 import { FiTarget } from "react-icons/fi";
@@ -173,9 +173,12 @@ const ShipDashboard = ({ ship, shipManager }: Props) => {
                 <GridItem area="rwd" padding={giPadding}>
                     <Stack textAlign="left">
                         <Text fontSize={headingSize}>On Kill</Text>
-                        <Text fontSize="large">
-                            {ship.baseRewardFamePoints}FP + {ship.bounties} Bounties
-                        </Text>
+                        <HStack>
+                            <Text fontSize="large">
+                                {`${ship.baseRewardFamePoints}FP + ${ship.bounties} `}
+                                <Bounty size="md" color="orange.500" verticalAlign="center" />
+                            </Text>
+                        </HStack>
                     </Stack>
                 </GridItem>
                 <GridItem area="btc" padding={giPadding}>
