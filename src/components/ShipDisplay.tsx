@@ -1,5 +1,19 @@
 import { FaHeartBroken, FaMinus, FaPlus } from "react-icons/fa";
-import { Box, Button, Grid, GridItem, Group, HStack, Icon, Separator, Show, Stack, Text } from "@chakra-ui/react";
+import {
+    Circle,
+    Box,
+    Button,
+    Float,
+    Grid,
+    GridItem,
+    Group,
+    HStack,
+    Icon,
+    Separator,
+    Show,
+    Stack,
+    Text,
+} from "@chakra-ui/react";
 import { Bounty, Credits, DiceIcon } from "./Icons";
 import type { Ship, UseShips } from "../hooks/useShips";
 import { ImHeart } from "react-icons/im";
@@ -25,9 +39,10 @@ const ShipDashboard = ({ ship, shipManager }: Props) => {
             boxShadow="md"
             padding={4}
             borderColor="gray.600" // or "gray.50" for subtle contrast
-            maxW="75%"
+            // maxW="75%"
             marginBottom={2}
-            marginLeft={4}
+            marginLeft={10}
+            marginRight={10}
         >
             <Grid
                 // Template Areas
@@ -62,8 +77,13 @@ const ShipDashboard = ({ ship, shipManager }: Props) => {
                         <Separator flex="1" />
                     </HStack>
                 </GridItem>
-                <GridItem area="im" padding={giPadding}>
-                    <img src={ship.imagePath} />
+                <GridItem area="im" padding={giPadding} position="relative">
+                    <img src={ship.imagePath} alt="ship" />
+                    <Float placement="bottom-end" offset={4}>
+                        <Circle size="5" bg="red" color="white">
+                            {ship.numberOfActivationChips}
+                        </Circle>
+                    </Float>
                 </GridItem>
                 <GridItem area="mv" padding={giPadding}>
                     <Stack textAlign="left">
