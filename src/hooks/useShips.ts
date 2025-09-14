@@ -92,7 +92,7 @@ function reducer(state: Ship[], action: Action) {
         case "UPDATE_MOVEMENT_RATE":
             return state.map((ship) =>
                 ship.id === action.payload.id
-                    ? { ...ship, movementRate: ship.movementRate + action.payload.change }
+                    ? { ...ship, movementRate: ship.movementRate + action.payload.change, altenateMovementRate: ship.altenateMovementRate === 0 ? 0 : ship.altenateMovementRate + action.payload.change }
                     : ship
             );
         case "UPDATE_LIFE_POINTS":

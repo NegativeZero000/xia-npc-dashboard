@@ -1,6 +1,5 @@
 import { FaHeartBroken, FaMinus, FaPlus } from "react-icons/fa";
 import {
-    Circle,
     Box,
     Button,
     Float,
@@ -13,6 +12,7 @@ import {
     Show,
     Stack,
     Text,
+    Badge,
 } from "@chakra-ui/react";
 import { Bounty, Credits, DiceIcon } from "./Icons";
 import type { Ship, UseShips } from "../hooks/useShips";
@@ -21,6 +21,7 @@ import { FiTarget } from "react-icons/fi";
 import { BsGeoAltFill } from "react-icons/bs";
 import { AlertDialog } from "./AlertDialog";
 import { InfoTip } from "./ui/toggle-tip";
+import { PiPokerChipFill } from "react-icons/pi";
 
 interface Props {
     ship: Ship;
@@ -80,9 +81,10 @@ const ShipDashboard = ({ ship, shipManager }: Props) => {
                 <GridItem area="im" padding={giPadding} position="relative">
                     <img src={ship.imagePath} alt="ship" />
                     <Float placement="bottom-end" offset={4}>
-                        <Circle size="5" bg="red" color="white">
+                        <Badge colorScheme="teal" borderRadius="md">
+                            <Icon as={PiPokerChipFill} color="red.500" boxSize={5} />
                             {ship.numberOfActivationChips}
-                        </Circle>
+                        </Badge>
                     </Float>
                 </GridItem>
                 <GridItem area="mv" padding={giPadding}>
